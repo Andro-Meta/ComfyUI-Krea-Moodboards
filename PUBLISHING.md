@@ -15,7 +15,7 @@ Repository = "https://github.com/Andro-Meta/ComfyUI-Krea-Moodboards"
 Issues = "https://github.com/Andro-Meta/ComfyUI-Krea-Moodboards/issues"
 
 [tool.comfy]
-PublisherId = "andro-meta"
+PublisherId = "andrometa"
 DisplayName = "Krea Moodboards"
 ```
 

@@ -22,7 +22,7 @@ Repository = "https://github.com/Andro-Meta/ComfyUI-Krea-Moodboards"
 Issues = "https://github.com/Andro-Meta/ComfyUI-Krea-Moodboards/issues"
 
 [tool.comfy]
-PublisherId = "andro-meta"
+PublisherId = "andrometa"
 DisplayName = "Krea Moodboards"
 requires-comfyui = ">=0.3.0"
 includes = ["data", "examples", "tools", "DATA_NOTICE.md"]
