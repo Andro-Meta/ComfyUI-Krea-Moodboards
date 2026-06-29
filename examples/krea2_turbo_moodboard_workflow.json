@@ -1,0 +1,80 @@
+{
+  "last_node_id": 4,
+  "last_link_id": 3,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "KreaMoodboardSearch",
+      "pos": [120, 120],
+      "size": [360, 220],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        { "name": "positive", "type": "STRING", "links": [1] },
+        { "name": "negative", "type": "STRING", "links": [2] },
+        { "name": "title", "type": "STRING", "links": null },
+        { "name": "metadata_json", "type": "STRING", "links": [3] },
+        { "name": "preview", "type": "STRING", "links": null }
+      ],
+      "widgets_values": ["dark teal gothic", 5, 1, 0, 0, "normal"]
+    },
+    {
+      "id": 2,
+      "type": "KreaMoodboardApply",
+      "pos": [560, 120],
+      "size": [420, 280],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        { "name": "prompt", "type": "STRING", "link": null },
+        { "name": "negative_prompt", "type": "STRING", "link": null },
+        { "name": "moodboard_positive", "type": "STRING", "link": 1 },
+        { "name": "moodboard_negative", "type": "STRING", "link": 2 },
+        { "name": "metadata_json", "type": "STRING", "link": 3 }
+      ],
+      "outputs": [
+        { "name": "positive", "type": "STRING", "links": null },
+        { "name": "negative", "type": "STRING", "links": null },
+        { "name": "metadata_json", "type": "STRING", "links": null }
+      ],
+      "widgets_values": [
+        "a ceramic fox on a table, editorial product photo",
+        "",
+        "",
+        "",
+        "{}",
+        "normal",
+        false,
+        "newline"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "Note",
+      "pos": [1040, 120],
+      "size": [420, 180],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "widgets_values": [
+        "Connect Krea Moodboard Apply.positive to the official Krea-2 Turbo subgraph Text String (User Prompt) input. If the workflow exposes a negative prompt, connect Krea Moodboard Apply.negative there."
+      ]
+    }
+  ],
+  "links": [
+    [1, 1, 0, 2, 2, "STRING"],
+    [2, 1, 1, 2, 3, "STRING"],
+    [3, 1, 3, 2, 4, "STRING"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "info": "Wiring template for adding Krea Moodboard nodes before the official Krea 2 Turbo workflow prompt input."
+  },
+  "version": 0.4
+}

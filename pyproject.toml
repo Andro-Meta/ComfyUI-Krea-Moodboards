@@ -1,0 +1,31 @@
+[project]
+name = "comfyui-krea-moodboards"
+version = "0.1.0"
+description = "Prompt-only Krea moodboard search and style nodes for ComfyUI."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [
+  { name = "ComfyUI Krea Moodboards contributors" }
+]
+keywords = ["comfyui", "krea", "krea2", "moodboards", "prompting"]
+dependencies = []
+classifiers = [
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Topic :: Multimedia :: Graphics",
+]
+
+[project.urls]
+Homepage = "https://github.com/Andro-Meta/ComfyUI-Krea-Moodboards"
+Repository = "https://github.com/Andro-Meta/ComfyUI-Krea-Moodboards"
+Issues = "https://github.com/Andro-Meta/ComfyUI-Krea-Moodboards/issues"
+
+[tool.comfy]
+PublisherId = "andro-meta"
+DisplayName = "Krea Moodboards"
+requires-comfyui = ">=0.3.0"
+includes = ["data", "examples", "tools", "DATA_NOTICE.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
