@@ -6,7 +6,7 @@ This is unofficial and is not affiliated with Krea AI.
 
 ## Quick Start
 
-Most users should start with this:
+For one moodboard style:
 
 1. Add `Krea Moodboard Search`.
 2. Type a style idea, for example `dark teal gothic`, `anime`, or `warm pastel product`.
@@ -16,12 +16,15 @@ Most users should start with this:
 6. Type your normal image prompt in `Apply.prompt`.
 7. Connect `Apply.positive` to the Krea 2 workflow prompt input.
 
-For mashups:
+For a mashup:
 
-1. Add two or more Search or Random nodes.
-2. Connect each node's `metadata_json` output into `Krea Moodboard Mashup.board_1`, `board_2`, etc.
-3. Check Mashup's `title` or `preview` output to see exactly which moodboards were selected.
-4. Connect Mashup `positive` and `negative` into `Krea Moodboard Apply`.
+1. Add `Krea Moodboard Catalog Browser`.
+2. Search a style, for example `anime`.
+3. Copy the UUID from `Copy into board_1-board_4: ...`.
+4. Paste that UUID into `Krea Moodboard Mashup.board_1`.
+5. Repeat for `board_2`, `board_3`, or `board_4`.
+6. Check Mashup's `title` or `preview` output to see exactly which moodboards were selected.
+7. Connect Mashup `positive` and `negative` into `Krea Moodboard Apply`.
 
 ## Where This Node Goes
 
@@ -81,7 +84,7 @@ Outputs:
 - `catalog_text`: readable Markdown-style list with names, UUIDs, and full URLs.
 - `catalog_json`: structured JSON for copying into other tools.
 
-To use a result in Mashup, copy the `Copy into board_1-board_4` UUID and paste it into `Krea Moodboard Mashup.board_1`, `board_2`, `board_3`, or `board_4`.
+To use a result in Mashup, copy only the UUID after `Copy into board_1-board_4:` and paste it into `Krea Moodboard Mashup.board_1`, `board_2`, `board_3`, or `board_4`.
 
 ### Krea Moodboard Search
 
@@ -180,7 +183,7 @@ KSampler samples -> VAE Decode
 
 ## Install
 
-Once published, the easiest install path should be ComfyUI-Manager's node search. Search for:
+Install from ComfyUI-Manager / Comfy Registry by searching:
 
 ```text
 Krea Moodboards
@@ -192,7 +195,7 @@ or:
 comfyui-krea-moodboards
 ```
 
-Until it is published to the Comfy Registry, clone or copy this folder into ComfyUI:
+Manual install:
 
 ```bash
 cd ComfyUI/custom_nodes
@@ -206,18 +209,6 @@ Krea / Moodboards
 ```
 
 There are no required Python dependencies beyond the standard library.
-
-## Comfy Registry And Manager
-
-ComfyUI's current community node discovery path is the Comfy Registry, which powers the new ComfyUI-Manager install UI. This repo includes registry-ready metadata in `pyproject.toml` and a publish workflow in `.github/workflows/publish-comfy-registry.yml`.
-
-Before publishing, update:
-
-- `pyproject.toml` repository URLs
-- `pyproject.toml` `[tool.comfy].PublisherId`
-- GitHub repository secret `REGISTRY_ACCESS_TOKEN`
-
-See `PUBLISHING.md` for the full Registry path and the optional legacy ComfyUI-Manager `custom-node-list.json` entry.
 
 ## Catalog
 
