@@ -3,18 +3,32 @@ from __future__ import annotations
 import json
 from functools import lru_cache
 
-from moodboard_catalog import (
-    CATALOG_PATH,
-    apply_style_to_prompt,
-    catalog_listing,
-    find_board,
-    load_catalog,
-    mashup_boards,
-    random_board,
-    resolve_board_reference,
-    search_boards,
-    style_from_board,
-)
+try:
+    from .moodboard_catalog import (
+        CATALOG_PATH,
+        apply_style_to_prompt,
+        catalog_listing,
+        find_board,
+        load_catalog,
+        mashup_boards,
+        random_board,
+        resolve_board_reference,
+        search_boards,
+        style_from_board,
+    )
+except ImportError:
+    from moodboard_catalog import (
+        CATALOG_PATH,
+        apply_style_to_prompt,
+        catalog_listing,
+        find_board,
+        load_catalog,
+        mashup_boards,
+        random_board,
+        resolve_board_reference,
+        search_boards,
+        style_from_board,
+    )
 
 
 STRENGTHS = ["concise", "normal", "strong"]

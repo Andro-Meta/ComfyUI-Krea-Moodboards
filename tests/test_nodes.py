@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+import importlib.util
 import json
+import sys
+from pathlib import Path
+from types import ModuleType
 
 import nodes
 
@@ -13,6 +17,23 @@ def test_node_mappings_are_registered() -> None:
     assert "KreaMoodboardApply" in package.NODE_CLASS_MAPPINGS
     assert package.NODE_DISPLAY_NAME_MAPPINGS["KreaMoodboardCatalogBrowser"] == "Krea Moodboard Catalog Browser"
     assert package.NODE_DISPLAY_NAME_MAPPINGS["KreaMoodboardApply"] == "Krea Moodboard Apply"
+
+
+def test_package_import_does_not_fall_back_to_comfy_core_nodes(monkeypatch) -> None:
+    fake_comfy_nodes = ModuleType("nodes")
+    monkeypatch.setitem(sys.modules, "nodes", fake_comfy_nodes)
+    spec = importlib.util.spec_from_file_location(
+        "comfyui_krea_moodboards_test",
+        Path(__file__).resolve().parents[1] / "__init__.py",
+        submodule_search_locations=[str(Path(__file__).resolve().parents[1])],
+    )
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    monkeypatch.setitem(sys.modules, spec.name, module)
+
+    spec.loader.exec_module(module)
+
+    assert "KreaMoodboardApply" in module.NODE_CLASS_MAPPINGS
 
 
 def test_search_node_outputs_prompt_metadata_and_preview(monkeypatch) -> None:

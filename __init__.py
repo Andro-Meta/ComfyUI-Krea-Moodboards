@@ -10,14 +10,23 @@ try:
         KreaMoodboardStyle,
     )
 except ImportError:
-    from nodes import (
-        KreaMoodboardApply,
-        KreaMoodboardCatalogBrowser,
-        KreaMoodboardMashup,
-        KreaMoodboardRandom,
-        KreaMoodboardSearch,
-        KreaMoodboardStyle,
-    )
+    import importlib.util
+    import sys
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parent
+    sys.path.insert(0, str(root))
+    spec = importlib.util.spec_from_file_location("_krea_moodboards_nodes", root / "nodes.py")
+    if spec is None or spec.loader is None:
+        raise
+    _nodes = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(_nodes)
+    KreaMoodboardApply = _nodes.KreaMoodboardApply
+    KreaMoodboardCatalogBrowser = _nodes.KreaMoodboardCatalogBrowser
+    KreaMoodboardMashup = _nodes.KreaMoodboardMashup
+    KreaMoodboardRandom = _nodes.KreaMoodboardRandom
+    KreaMoodboardSearch = _nodes.KreaMoodboardSearch
+    KreaMoodboardStyle = _nodes.KreaMoodboardStyle
 
 
 NODE_CLASS_MAPPINGS = {
