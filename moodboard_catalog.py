@@ -36,6 +36,16 @@ FIELD_WEIGHTS: tuple[tuple[str, int], ...] = (
     ("negative_guidance", 3),
 )
 
+STYLE_FAMILY_TERMS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("anime", ("anime", "manga", "kawaii", "chibi", "retroanime")),
+    ("illustration", ("illustration", "illustrated", "ink", "watercolor", "drawing", "sketch", "storybook")),
+    ("graphic", ("graphic", "poster", "typography", "halftone", "pop art", "comic", "vector")),
+    ("abstract", ("abstract", "abstraction", "geometric", "surreal", "spectral", "iridescent")),
+    ("3d", ("3d", "voxel", "isometric", "clay", "render", "cgi", "plastic")),
+    ("photo", ("photo", "photograph", "photographic", "photoreal", "documentary", "camera", "lens")),
+    ("cinematic", ("cinematic", "film", "35mm", "noir", "editorial")),
+)
+
 
 def load_catalog(path: str | Path = CATALOG_PATH) -> list[dict[str, Any]]:
     catalog_path = Path(path)
@@ -113,6 +123,7 @@ def random_board(
     query: str = "",
     random_from_top_k: int = 0,
     min_score: int = 1,
+    random_mode: str = "balanced",
 ) -> dict[str, Any]:
     pool = catalog
     if query.strip():
@@ -121,7 +132,21 @@ def random_board(
         pool = [match["board"] for match in matches]
     if not pool:
         raise ValueError("No Krea moodboards matched the query.")
-    return random.Random(int(seed)).choice(pool)
+    rng = random.Random(int(seed))
+    if random_mode == "any":
+        return rng.choice(pool)
+    if random_mode == "photo":
+        filtered = [board for board in pool if style_family(board) == "photo"]
+        return rng.choice(filtered or pool)
+    if random_mode == "non_photo":
+        filtered = [board for board in pool if style_family(board) != "photo"]
+        return rng.choice(filtered or pool)
+
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for board in pool:
+        grouped.setdefault(style_family(board), []).append(board)
+    family = rng.choice(sorted(grouped))
+    return rng.choice(grouped[family])
 
 
 def find_board(catalog: list[dict[str, Any]], value: str) -> dict[str, Any]:
@@ -141,6 +166,27 @@ def find_board(catalog: list[dict[str, Any]], value: str) -> dict[str, Any]:
     if matches:
         return matches[0]["board"]
     raise ValueError(f"No Krea moodboard matched: {value}")
+
+
+def resolve_board_reference(catalog: list[dict[str, Any]], value: str) -> dict[str, Any]:
+    """Resolve title/search text, slug, UUID, URL, or metadata_json into a board."""
+    raw = str(value or "").strip()
+    if not raw:
+        raise ValueError("Provide a moodboard title, search text, URL, UUID, slug, or metadata_json.")
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError:
+        return find_board(catalog, raw)
+    if not isinstance(data, dict):
+        return find_board(catalog, raw)
+    for key in ("uuid", "url", "slug", "title"):
+        candidate = str(data.get(key) or "").strip()
+        if candidate:
+            try:
+                return find_board(catalog, candidate)
+            except ValueError:
+                continue
+    return find_board(catalog, raw)
 
 
 def style_from_board(board: dict[str, Any], *, strength: str = "normal") -> dict[str, str]:
@@ -246,13 +292,31 @@ def mashup_boards(
                 style_axes.append(axis)
         sources.append({"title": title, "url": metadata.get("url", ""), "uuid": metadata.get("uuid", "")})
 
+    source_titles = [source["title"] for source in sources]
+    mashup_title = "Mashup: " + " + ".join(source_titles[:4])
     metadata = {"source_count": len(sources), "sources": sources, "style_axes": style_axes}
+    preview = "\n".join(
+        f"{idx}. {source['title']} | {source['url']}" for idx, source in enumerate(sources, start=1)
+    )
     return {
         "positive": "Blend these Krea moodboard styles: " + " | ".join(positives),
         "negative": " ".join(_dedupe(negatives)),
-        "title": "Krea Moodboard Mashup",
+        "title": mashup_title,
         "metadata_json": json.dumps(metadata, ensure_ascii=False, sort_keys=True),
+        "preview": (
+            "Mashup sources resolved. Paste metadata_json from Search/Random/Style nodes, "
+            "or type a moodboard title, search phrase, UUID, slug, or Krea URL.\n"
+            f"{preview}"
+        ),
     }
+
+
+def style_family(board: dict[str, Any]) -> str:
+    text = " ".join(_search_fields(board).values()).lower()
+    for family, terms in STYLE_FAMILY_TERMS:
+        if any(term in text for term in terms):
+            return family
+    return "other"
 
 
 def _score_board(board: dict[str, Any], expanded_terms: list[str]) -> tuple[int, list[str]]:

@@ -11,6 +11,7 @@ from moodboard_catalog import (
     load_catalog,
     mashup_boards,
     random_board,
+    resolve_board_reference,
     search_boards,
     style_from_board,
 )
@@ -102,6 +103,58 @@ def test_random_board_is_deterministic_and_can_use_top_matches(tmp_path: Path) -
     assert first["uuid"] == second["uuid"]
 
 
+def test_balanced_random_does_not_let_photo_styles_dominate() -> None:
+    photo_boards = [
+        {
+            "url": f"https://www.krea.ai/moodboard-feed/photo-{index}",
+            "slug": f"photo-{index}",
+            "uuid": f"photo-{index}",
+            "title": f"Photo Style {index}",
+            "taste_profile": "cinematic photo lens documentary film look",
+            "keywords": ["photo", "cinematic"],
+            "qwen_guidance": {
+                "prompt_guidance": "Use photographic lens lighting and cinematic film texture.",
+                "negative_guidance": "",
+                "style_axes": ["photographic"],
+                "conditioning_notes": [],
+                "source_summary": "Photo style.",
+            },
+        }
+        for index in range(20)
+    ]
+    illustration_board = {
+        "url": "https://www.krea.ai/moodboard-feed/illustration",
+        "slug": "illustration",
+        "uuid": "illustration",
+        "title": "Ink Illustration",
+        "taste_profile": "flat ink drawing and illustrated poster language",
+        "keywords": ["illustration", "ink"],
+        "qwen_guidance": {
+            "prompt_guidance": "Use ink illustration, flat shapes, and graphic poster texture.",
+            "negative_guidance": "",
+            "style_axes": ["illustration"],
+            "conditioning_notes": [],
+            "source_summary": "Illustration style.",
+        },
+    }
+    catalog = photo_boards + [illustration_board]
+
+    picks = [random_board(catalog, seed=seed, random_mode="balanced") for seed in range(100)]
+
+    assert sum(board["uuid"] == "illustration" for board in picks) >= 25
+
+
+def test_resolve_board_reference_accepts_metadata_json_or_search_text(tmp_path: Path) -> None:
+    catalog = load_catalog(write_catalog(tmp_path / "catalog.json"))
+    metadata_ref = json.dumps({"uuid": "11111111-1111-5111-9111-111111111111"})
+
+    from_metadata = resolve_board_reference(catalog, metadata_ref)
+    from_search = resolve_board_reference(catalog, "warm product")
+
+    assert from_metadata["title"] == "Abyssal Gothic"
+    assert from_search["title"] == "Warm Product Pastel"
+
+
 def test_style_from_board_returns_positive_negative_and_metadata(tmp_path: Path) -> None:
     catalog = load_catalog(write_catalog(tmp_path / "catalog.json"))
 
@@ -140,6 +193,9 @@ def test_mashup_dedupes_negative_guidance_and_style_axes(tmp_path: Path) -> None
 
     assert "Abyssal Gothic" in mashup["positive"]
     assert "Warm Product Pastel" in mashup["positive"]
+    assert mashup["title"] == "Mashup: Abyssal Gothic + Warm Product Pastel"
     assert "Avoid flat bright daylight" in mashup["negative"]
     assert metadata["source_count"] == 2
     assert "deep teal" in metadata["style_axes"]
+    assert "Abyssal Gothic" in mashup["preview"]
+    assert "Warm Product Pastel" in mashup["preview"]

@@ -18,7 +18,7 @@
         { "name": "metadata_json", "type": "STRING", "links": [3] },
         { "name": "preview", "type": "STRING", "links": null }
       ],
-      "widgets_values": ["dark teal gothic", 5, 1, 0, 0, "normal"]
+      "widgets_values": ["dark teal gothic", 5, 1, 0, 0, "normal", "balanced"]
     },
     {
       "id": 2,

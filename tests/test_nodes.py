@@ -70,3 +70,55 @@ def test_apply_node_combines_prompt_and_style_metadata() -> None:
     assert "warm pastel lighting" in positive
     assert negative == "low quality, Avoid harsh contrast."
     assert json.loads(metadata_json)["title"] == "Warm Pastel"
+
+
+def test_mashup_node_accepts_metadata_json_and_outputs_preview(monkeypatch) -> None:
+    boards = [
+        {
+            "url": "https://www.krea.ai/moodboard-feed/gothic",
+            "slug": "gothic",
+            "uuid": "gothic-uuid",
+            "title": "Gothic Teal",
+            "taste_profile": "Deep teal gothic style.",
+            "keywords": ["gothic", "teal"],
+            "qwen_guidance": {
+                "prompt_guidance": "Use deep teal gothic lighting.",
+                "negative_guidance": "Avoid flat daylight.",
+                "style_axes": ["deep teal"],
+                "conditioning_notes": [],
+                "source_summary": "summary",
+            },
+        },
+        {
+            "url": "https://www.krea.ai/moodboard-feed/pastel",
+            "slug": "pastel",
+            "uuid": "pastel-uuid",
+            "title": "Pastel Product",
+            "taste_profile": "Warm product studio style.",
+            "keywords": ["pastel", "product"],
+            "qwen_guidance": {
+                "prompt_guidance": "Use warm pastel studio lighting.",
+                "negative_guidance": "Avoid harsh contrast.",
+                "style_axes": ["warm pastel"],
+                "conditioning_notes": [],
+                "source_summary": "summary",
+            },
+        },
+    ]
+    monkeypatch.setattr(nodes, "_catalog", lambda: boards)
+
+    positive, negative, title, metadata_json, preview = nodes.KreaMoodboardMashup().mashup(
+        board_1=json.dumps({"uuid": "gothic-uuid"}),
+        board_2="pastel product",
+        weight_1=0.7,
+        weight_2=0.3,
+        strength="normal",
+    )
+
+    assert title == "Mashup: Gothic Teal + Pastel Product"
+    assert "Gothic Teal" in positive
+    assert "Pastel Product" in positive
+    assert "Avoid flat daylight" in negative
+    assert json.loads(metadata_json)["source_count"] == 2
+    assert "Gothic Teal" in preview
+    assert "Paste metadata_json" in preview

@@ -10,6 +10,7 @@ from moodboard_catalog import (
     load_catalog,
     mashup_boards,
     random_board,
+    resolve_board_reference,
     search_boards,
     style_from_board,
 )
@@ -17,6 +18,7 @@ from moodboard_catalog import (
 
 STRENGTHS = ["concise", "normal", "strong"]
 SEPARATORS = ["newline", "comma"]
+RANDOM_MODES = ["balanced", "any", "non_photo", "photo"]
 
 
 @lru_cache(maxsize=1)
@@ -110,10 +112,26 @@ class KreaMoodboardSearch:
                     STRENGTHS,
                     {"default": "normal", "tooltip": "Controls detail level in the positive style text."},
                 ),
+                "random_mode": (
+                    RANDOM_MODES,
+                    {
+                        "default": "balanced",
+                        "tooltip": "balanced samples style families first; any samples the whole pool; non_photo avoids photo-family boards.",
+                    },
+                ),
             }
         }
 
-    def search(self, query: str, top_k: int, min_score: int, random_from_top_k: int, seed: int, strength: str):
+    def search(
+        self,
+        query: str,
+        top_k: int,
+        min_score: int,
+        random_from_top_k: int,
+        seed: int,
+        strength: str,
+        random_mode: str = "balanced",
+    ):
         catalog = _catalog()
         matches = search_boards(catalog, query, top_k=top_k, min_score=min_score)
         if not matches:
@@ -125,6 +143,7 @@ class KreaMoodboardSearch:
                 query=query,
                 random_from_top_k=min(random_from_top_k, top_k),
                 min_score=min_score,
+                random_mode=random_mode,
             )
         else:
             board = matches[0]["board"]
@@ -158,19 +177,39 @@ class KreaMoodboardRandom:
                     {"default": 25, "min": 1, "max": 100, "step": 1, "tooltip": "Random pool size after search."},
                 ),
                 "strength": (STRENGTHS, {"default": "normal"}),
+                "random_mode": (
+                    RANDOM_MODES,
+                    {
+                        "default": "balanced",
+                        "tooltip": "balanced samples style families first so photo boards do not dominate random picks.",
+                    },
+                ),
             }
         }
 
-    def random_style(self, seed: int, query: str, random_from_top_k: int, strength: str):
-        board = random_board(_catalog(), seed=seed, query=query, random_from_top_k=random_from_top_k)
+    def random_style(
+        self,
+        seed: int,
+        query: str,
+        random_from_top_k: int,
+        strength: str,
+        random_mode: str = "balanced",
+    ):
+        board = random_board(
+            _catalog(),
+            seed=seed,
+            query=query,
+            random_from_top_k=random_from_top_k,
+            random_mode=random_mode,
+        )
         style = style_from_board(board, strength=strength)
         return style["positive"], style["negative"], style["title"], style["metadata_json"]
 
 
 class KreaMoodboardMashup:
     CATEGORY = "Krea/Moodboards"
-    RETURN_TYPES = ("STRING", "STRING", "STRING", "STRING")
-    RETURN_NAMES = ("positive", "negative", "title", "metadata_json")
+    RETURN_TYPES = ("STRING", "STRING", "STRING", "STRING", "STRING")
+    RETURN_NAMES = ("positive", "negative", "title", "metadata_json", "preview")
     FUNCTION = "mashup"
     DESCRIPTION = "Blend two to four Krea moodboards into one prompt style."
 
@@ -178,15 +217,43 @@ class KreaMoodboardMashup:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "board_1": ("STRING", {"default": "", "multiline": False}),
-                "board_2": ("STRING", {"default": "", "multiline": False}),
+                "board_1": (
+                    "STRING",
+                    {
+                        "default": "",
+                        "multiline": True,
+                        "tooltip": "Paste metadata_json from another Krea Moodboard node, or type a title, search phrase, UUID, slug, or URL.",
+                    },
+                ),
+                "board_2": (
+                    "STRING",
+                    {
+                        "default": "",
+                        "multiline": True,
+                        "tooltip": "Paste metadata_json from another Krea Moodboard node, or type a title, search phrase, UUID, slug, or URL.",
+                    },
+                ),
                 "weight_1": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 5.0, "step": 0.05}),
                 "weight_2": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 5.0, "step": 0.05}),
                 "strength": (STRENGTHS, {"default": "normal"}),
             },
             "optional": {
-                "board_3": ("STRING", {"default": "", "multiline": False}),
-                "board_4": ("STRING", {"default": "", "multiline": False}),
+                "board_3": (
+                    "STRING",
+                    {
+                        "default": "",
+                        "multiline": True,
+                        "tooltip": "Optional third board: metadata_json, title, search phrase, UUID, slug, or URL.",
+                    },
+                ),
+                "board_4": (
+                    "STRING",
+                    {
+                        "default": "",
+                        "multiline": True,
+                        "tooltip": "Optional fourth board: metadata_json, title, search phrase, UUID, slug, or URL.",
+                    },
+                ),
                 "weight_3": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 5.0, "step": 0.05}),
                 "weight_4": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 5.0, "step": 0.05}),
             },
@@ -207,9 +274,9 @@ class KreaMoodboardMashup:
         catalog = _catalog()
         names = [board_1, board_2, board_3, board_4]
         weights = [weight_1, weight_2, weight_3, weight_4]
-        boards = [find_board(catalog, name) for name in names if str(name or "").strip()]
+        boards = [resolve_board_reference(catalog, name) for name in names if str(name or "").strip()]
         style = mashup_boards(boards, weights=weights[: len(boards)], strength=strength)
-        return style["positive"], style["negative"], style["title"], style["metadata_json"]
+        return style["positive"], style["negative"], style["title"], style["metadata_json"], style["preview"]
 
 
 class KreaMoodboardApply:

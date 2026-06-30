@@ -69,11 +69,36 @@ Use `style_only` if you want to feed the moodboard text into another prompt enha
 
 ### Krea Moodboard Random
 
-Picks a deterministic random style by seed. Add a query to randomize within a style family, for example `query = cinematic noir` and `random_from_top_k = 25`.
+Picks a deterministic random style by seed. By default it uses `random_mode = balanced`, which samples a style family first so the largest family in the catalog, especially photo-like boards, does not dominate random results.
+
+Random modes:
+
+- `balanced`: recommended default; samples across style families first.
+- `any`: pure random from the whole matching pool.
+- `non_photo`: avoids boards classified as photo-family when possible.
+- `photo`: only photo-family boards when possible.
+
+Add a query to randomize within a style family, for example `query = cinematic noir` and `random_from_top_k = 25`.
 
 ### Krea Moodboard Mashup
 
 Blends two to four moodboards by concatenating transferable style guidance, deduping style axes and negative guidance.
+
+What to put in each `board` box:
+
+- Best option: paste or connect the `metadata_json` output from `Krea Moodboard Search`, `Krea Moodboard Random`, or `Krea Moodboard Style`.
+- Also works: a moodboard title, search phrase, UUID, slug, or Krea moodboard URL.
+
+Examples:
+
+```text
+Abyssal Gothic
+warm pastel product
+https://www.krea.ai/moodboard-feed/...
+{"uuid": "f8ba7b69-987b-5cc3-abd8-fc734a82223a"}
+```
+
+The `preview` output lists which source moodboards were resolved. If the mashup looks wrong, check `preview` first and make the board boxes more specific.
 
 ### Krea Moodboard Style
 
@@ -91,6 +116,8 @@ Looks up one moodboard by exact title, slug, UUID, URL, or search phrase. This a
 6. Connect `Krea Moodboard Search.negative` to `Krea Moodboard Apply.moodboard_negative`.
 7. Connect `Krea Moodboard Apply.positive` to the Krea-2 Turbo subgraph `Text String (User Prompt)` input.
 8. If your workflow exposes a negative prompt or CFG path, connect `Krea Moodboard Apply.negative` there. If it does not, leave it unused.
+
+For mashups, use two or more `Krea Moodboard Search` or `Krea Moodboard Random` nodes, then connect their `metadata_json` outputs into `Krea Moodboard Mashup.board_1`, `board_2`, etc. Connect the Mashup `positive` and `negative` outputs into `Krea Moodboard Apply`.
 
 ### Manual Krea 2 Graph
 

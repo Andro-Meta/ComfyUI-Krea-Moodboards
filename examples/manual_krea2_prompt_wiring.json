@@ -17,7 +17,7 @@
         { "name": "title", "type": "STRING", "links": null },
         { "name": "metadata_json", "type": "STRING", "links": [3] }
       ],
-      "widgets_values": [1234, "cinematic noir", 25, "normal"]
+      "widgets_values": [1234, "cinematic noir", 25, "normal", "balanced"]
     },
     {
       "id": 2,
