@@ -3,6 +3,7 @@ from __future__ import annotations
 try:
     from .nodes import (
         KreaMoodboardApply,
+        KreaMoodboardCatalogBrowser,
         KreaMoodboardMashup,
         KreaMoodboardRandom,
         KreaMoodboardSearch,
@@ -11,6 +12,7 @@ try:
 except ImportError:
     from nodes import (
         KreaMoodboardApply,
+        KreaMoodboardCatalogBrowser,
         KreaMoodboardMashup,
         KreaMoodboardRandom,
         KreaMoodboardSearch,
@@ -20,6 +22,7 @@ except ImportError:
 
 NODE_CLASS_MAPPINGS = {
     "KreaMoodboardStyle": KreaMoodboardStyle,
+    "KreaMoodboardCatalogBrowser": KreaMoodboardCatalogBrowser,
     "KreaMoodboardSearch": KreaMoodboardSearch,
     "KreaMoodboardRandom": KreaMoodboardRandom,
     "KreaMoodboardMashup": KreaMoodboardMashup,
@@ -28,6 +31,7 @@ NODE_CLASS_MAPPINGS = {
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "KreaMoodboardStyle": "Krea Moodboard Style",
+    "KreaMoodboardCatalogBrowser": "Krea Moodboard Catalog Browser",
     "KreaMoodboardSearch": "Krea Moodboard Search",
     "KreaMoodboardRandom": "Krea Moodboard Random",
     "KreaMoodboardMashup": "Krea Moodboard Mashup",

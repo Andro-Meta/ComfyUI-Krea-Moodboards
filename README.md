@@ -4,6 +4,25 @@ Prompt-only Krea moodboard nodes for ComfyUI. This pack ships 2500 enriched Krea
 
 This is unofficial and is not affiliated with Krea AI.
 
+## Quick Start
+
+Most users should start with this:
+
+1. Add `Krea Moodboard Search`.
+2. Type a style idea, for example `dark teal gothic`, `anime`, or `warm pastel product`.
+3. Add `Krea Moodboard Apply`.
+4. Connect `Search.positive` to `Apply.moodboard_positive`.
+5. Connect `Search.negative` to `Apply.moodboard_negative`.
+6. Type your normal image prompt in `Apply.prompt`.
+7. Connect `Apply.positive` to the Krea 2 workflow prompt input.
+
+For mashups:
+
+1. Add two or more Search or Random nodes.
+2. Connect each node's `metadata_json` output into `Krea Moodboard Mashup.board_1`, `board_2`, etc.
+3. Check Mashup's `title` or `preview` output to see exactly which moodboards were selected.
+4. Connect Mashup `positive` and `negative` into `Krea Moodboard Apply`.
+
 ## Where This Node Goes
 
 Install this repo into:
@@ -36,6 +55,33 @@ https://www.krea.ai/app?gallery=moodboards
 Search or browse there, then use the same style names or aesthetic terms in `Krea Moodboard Search`. Each node returns `metadata_json` with the original Krea moodboard `url`, so you can click through and visually inspect the selected source moodboard.
 
 ## Nodes
+
+### Krea Moodboard Catalog Browser
+
+Lists moodboard names, UUIDs, keywords, style axes, and Krea source URLs.
+
+Use this when you want to know exactly which UUID belongs to which moodboard, or when you want copyable links back to Krea:
+
+```text
+1. [Nostalgic Summer Anime](https://www.krea.ai/moodboard-feed/...)
+   Copy into board_1-board_4: 57ad8374-9898-59aa-85ea-ec37b6947d8c
+   UUID: 57ad8374-9898-59aa-85ea-ec37b6947d8c
+   Slug: nostalgic-summer-anime-57ad8374-9898-59aa-85ea-ec37b6947d8c
+   Keywords: nostalgic anime, warm summer, ...
+```
+
+Inputs:
+
+- `query`: optional search text. Leave blank to browse alphabetically.
+- `page`: page number.
+- `page_size`: results per page.
+
+Outputs:
+
+- `catalog_text`: readable Markdown-style list with names, UUIDs, and full URLs.
+- `catalog_json`: structured JSON for copying into other tools.
+
+To use a result in Mashup, copy the `Copy into board_1-board_4` UUID and paste it into `Krea Moodboard Mashup.board_1`, `board_2`, `board_3`, or `board_4`.
 
 ### Krea Moodboard Search
 

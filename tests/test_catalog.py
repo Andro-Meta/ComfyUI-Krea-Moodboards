@@ -8,6 +8,7 @@ import pytest
 from moodboard_catalog import (
     CatalogLoadError,
     apply_style_to_prompt,
+    catalog_listing,
     load_catalog,
     mashup_boards,
     random_board,
@@ -92,6 +93,21 @@ def test_search_preview_includes_scores_keywords_and_urls(tmp_path: Path) -> Non
     assert "Warm Product Pastel" in matches[0]["preview"]
     assert "Score:" in matches[0]["preview"]
     assert "https://www.krea.ai/moodboard-feed/" in matches[0]["preview"]
+
+
+def test_catalog_listing_outputs_titles_uuids_links_and_json(tmp_path: Path) -> None:
+    catalog = load_catalog(write_catalog(tmp_path / "catalog.json"))
+
+    listing = catalog_listing(catalog, query="gothic", page=1, page_size=5)
+    data = json.loads(listing["catalog_json"])
+
+    assert "[Abyssal Gothic](https://www.krea.ai/moodboard-feed/abyssal-gothic" in listing["catalog_text"]
+    assert "Copy into board_1-board_4: 11111111-1111-5111-9111-111111111111" in listing["catalog_text"]
+    assert "UUID: 11111111-1111-5111-9111-111111111111" in listing["catalog_text"]
+    assert data["total"] == 1
+    assert data["items"][0]["title"] == "Abyssal Gothic"
+    assert data["items"][0]["uuid"] == "11111111-1111-5111-9111-111111111111"
+    assert data["items"][0]["url"].startswith("https://www.krea.ai/moodboard-feed/")
 
 
 def test_random_board_is_deterministic_and_can_use_top_matches(tmp_path: Path) -> None:

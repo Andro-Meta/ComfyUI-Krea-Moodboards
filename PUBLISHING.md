@@ -4,9 +4,9 @@ ComfyUI's current node discovery flow is the Comfy Registry, which powers the ne
 
 ## Current Recommended Path: Comfy Registry
 
-1. Push this project to a public GitHub repo.
-2. Create a publisher on the Comfy Registry website.
-3. Replace these placeholders in `pyproject.toml`:
+1. Push this project to the public GitHub repo.
+2. Confirm the Comfy Registry publisher exists.
+3. Confirm `pyproject.toml` has the live repository and publisher metadata:
 
 ```toml
 [project.urls]
@@ -44,8 +44,6 @@ Important:
 ## Legacy ComfyUI-Manager List
 
 If you also want legacy ComfyUI-Manager visibility, submit a PR to `Comfy-Org/ComfyUI-Manager` adding an entry similar to this in `custom-node-list.json`.
-
-Replace the GitHub URL and author first:
 
 ```json
 {

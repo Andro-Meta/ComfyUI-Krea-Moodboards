@@ -6,6 +6,7 @@ from functools import lru_cache
 from moodboard_catalog import (
     CATALOG_PATH,
     apply_style_to_prompt,
+    catalog_listing,
     find_board,
     load_catalog,
     mashup_boards,
@@ -59,6 +60,47 @@ class KreaMoodboardStyle:
         board = find_board(_catalog(), title_slug_uuid_or_url)
         style = style_from_board(board, strength=strength)
         return style["positive"], style["negative"], style["title"], style["metadata_json"]
+
+
+class KreaMoodboardCatalogBrowser:
+    CATEGORY = "Krea/Moodboards"
+    RETURN_TYPES = ("STRING", "STRING")
+    RETURN_NAMES = ("catalog_text", "catalog_json")
+    FUNCTION = "browse"
+    DESCRIPTION = "List Krea moodboard names, UUIDs, keywords, and source URLs so users can identify exact catalog entries."
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "query": (
+                    "STRING",
+                    {
+                        "default": "",
+                        "multiline": False,
+                        "tooltip": "Optional search query. Leave blank to browse alphabetically.",
+                    },
+                ),
+                "page": (
+                    "INT",
+                    {"default": 1, "min": 1, "max": 250, "step": 1, "tooltip": "Page number for browsing results."},
+                ),
+                "page_size": (
+                    "INT",
+                    {
+                        "default": 25,
+                        "min": 1,
+                        "max": 100,
+                        "step": 1,
+                        "tooltip": "How many moodboards to list in catalog_text.",
+                    },
+                ),
+            }
+        }
+
+    def browse(self, query: str, page: int, page_size: int):
+        listing = catalog_listing(_catalog(), query=query, page=page, page_size=page_size)
+        return listing["catalog_text"], listing["catalog_json"]
 
 
 class KreaMoodboardSearch:

@@ -8,8 +8,10 @@ import nodes
 def test_node_mappings_are_registered() -> None:
     import __init__ as package
 
+    assert "KreaMoodboardCatalogBrowser" in package.NODE_CLASS_MAPPINGS
     assert "KreaMoodboardSearch" in package.NODE_CLASS_MAPPINGS
     assert "KreaMoodboardApply" in package.NODE_CLASS_MAPPINGS
+    assert package.NODE_DISPLAY_NAME_MAPPINGS["KreaMoodboardCatalogBrowser"] == "Krea Moodboard Catalog Browser"
     assert package.NODE_DISPLAY_NAME_MAPPINGS["KreaMoodboardApply"] == "Krea Moodboard Apply"
 
 
@@ -45,6 +47,35 @@ def test_search_node_outputs_prompt_metadata_and_preview(monkeypatch) -> None:
     assert negative == "Avoid flat daylight."
     assert json.loads(metadata_json)["url"] == board["url"]
     assert "Gothic Teal" in preview
+
+
+def test_catalog_browser_node_outputs_uuid_name_and_link_list(monkeypatch) -> None:
+    board = {
+        "url": "https://www.krea.ai/moodboard-feed/example",
+        "slug": "example",
+        "uuid": "abc",
+        "title": "Gothic Teal",
+        "taste_profile": "Deep teal gothic style.",
+        "keywords": ["gothic", "teal"],
+        "qwen_guidance": {
+            "prompt_guidance": "Use deep teal gothic lighting.",
+            "negative_guidance": "Avoid flat daylight.",
+            "style_axes": ["deep teal"],
+            "conditioning_notes": [],
+            "source_summary": "summary",
+        },
+    }
+    monkeypatch.setattr(nodes, "_catalog", lambda: [board])
+
+    catalog_text, catalog_json = nodes.KreaMoodboardCatalogBrowser().browse(
+        query="gothic",
+        page=1,
+        page_size=10,
+    )
+
+    assert "[Gothic Teal](https://www.krea.ai/moodboard-feed/example)" in catalog_text
+    assert "UUID: abc" in catalog_text
+    assert json.loads(catalog_json)["items"][0]["uuid"] == "abc"
 
 
 def test_apply_node_combines_prompt_and_style_metadata() -> None:

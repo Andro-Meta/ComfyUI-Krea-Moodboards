@@ -116,6 +116,38 @@ def search_boards(
     return matches[: max(1, min(int(top_k or 5), 25))]
 
 
+def catalog_listing(
+    catalog: list[dict[str, Any]],
+    *,
+    query: str = "",
+    page: int = 1,
+    page_size: int = 25,
+) -> dict[str, str]:
+    safe_page = max(1, int(page or 1))
+    safe_page_size = max(1, min(int(page_size or 25), 100))
+    if str(query or "").strip():
+        matches = search_boards(catalog, query, top_k=min(max(safe_page * safe_page_size, safe_page_size), 100), min_score=1)
+        items = [match["board"] for match in matches]
+    else:
+        items = sorted(catalog, key=lambda board: str(board.get("title") or ""))
+    total = len(items)
+    start = (safe_page - 1) * safe_page_size
+    page_items = items[start:start + safe_page_size]
+    rows = [_catalog_row(board, index=start + idx + 1) for idx, board in enumerate(page_items)]
+    text = "\n\n".join(rows) if rows else "No Krea moodboards matched this query."
+    payload = {
+        "query": str(query or ""),
+        "page": safe_page,
+        "page_size": safe_page_size,
+        "total": total,
+        "items": [_catalog_item_summary(board) for board in page_items],
+    }
+    return {
+        "catalog_text": text,
+        "catalog_json": json.dumps(payload, ensure_ascii=False, sort_keys=True),
+    }
+
+
 def random_board(
     catalog: list[dict[str, Any]],
     *,
@@ -383,6 +415,33 @@ def _preview(board: dict[str, Any], score: int, matched_terms: list[str]) -> str
     return (
         f"{board.get('title', 'Untitled')} | Score: {score} | "
         f"Keywords: {keywords or 'none'} | Matched: {terms} | URL: {board.get('url', '')}"
+    )
+
+
+def _catalog_item_summary(board: dict[str, Any]) -> dict[str, Any]:
+    guidance = _guidance(board)
+    return {
+        "title": str(board.get("title") or ""),
+        "uuid": str(board.get("uuid") or ""),
+        "slug": str(board.get("slug") or ""),
+        "url": str(board.get("url") or ""),
+        "keywords": _string_list(board.get("keywords")),
+        "style_axes": _string_list(guidance.get("style_axes")),
+        "source_summary": str(guidance.get("source_summary") or ""),
+    }
+
+
+def _catalog_row(board: dict[str, Any], *, index: int) -> str:
+    summary = _catalog_item_summary(board)
+    keywords = ", ".join(summary["keywords"][:6]) or "none"
+    axes = ", ".join(summary["style_axes"][:6]) or "none"
+    return (
+        f"{index}. [{summary['title']}]({summary['url']})\n"
+        f"   Copy into board_1-board_4: {summary['uuid']}\n"
+        f"   UUID: {summary['uuid']}\n"
+        f"   Slug: {summary['slug']}\n"
+        f"   Keywords: {keywords}\n"
+        f"   Style axes: {axes}"
     )
 
 
