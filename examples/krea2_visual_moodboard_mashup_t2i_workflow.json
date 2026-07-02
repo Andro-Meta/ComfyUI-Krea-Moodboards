@@ -1,6 +1,6 @@
 {
-  "last_node_id": 13,
-  "last_link_id": 16,
+  "last_node_id": 15,
+  "last_link_id": 18,
   "nodes": [
     {
       "id": 1,
@@ -21,23 +21,17 @@
         {
           "name": "positive",
           "type": "STRING",
-          "links": [
-            1
-          ]
+          "links": null
         },
         {
           "name": "negative",
           "type": "STRING",
-          "links": [
-            2
-          ]
+          "links": null
         },
         {
           "name": "title",
           "type": "STRING",
-          "links": [
-            14
-          ]
+          "links": null
         },
         {
           "name": "uuid",
@@ -53,7 +47,7 @@
           "name": "metadata_json",
           "type": "STRING",
           "links": [
-            3
+            17
           ]
         },
         {
@@ -63,28 +57,28 @@
         }
       ],
       "widgets_values": [
-        "horror",
+        "anime",
         "",
         "",
         "",
         "",
         "normal"
       ],
-      "title": "Pick Krea Moodboard"
+      "title": "Pick Moodboard A"
     },
     {
       "id": 2,
       "type": "KreaMoodboardApply",
       "pos": [
-        640,
-        130
+        1120,
+        360
       ],
       "size": [
         430,
         300
       ],
       "flags": {},
-      "order": 1,
+      "order": 3,
       "mode": 0,
       "inputs": [
         {
@@ -144,14 +138,14 @@
         false,
         "newline"
       ],
-      "title": "Apply Moodboard To Prompt"
+      "title": "Apply Mashup To Prompt"
     },
     {
       "id": 3,
       "type": "CLIPLoader",
       "pos": [
-        640,
-        500
+        1120,
+        780
       ],
       "size": [
         340,
@@ -182,8 +176,8 @@
       "id": 4,
       "type": "TextEncodeKrea2",
       "pos": [
-        1110,
-        120
+        1580,
+        360
       ],
       "size": [
         360,
@@ -223,8 +217,8 @@
       "id": 5,
       "type": "TextEncodeKrea2",
       "pos": [
-        1110,
-        310
+        1580,
+        550
       ],
       "size": [
         360,
@@ -265,7 +259,7 @@
       "type": "UNETLoader",
       "pos": [
         60,
-        800
+        1480
       ],
       "size": [
         360,
@@ -295,7 +289,7 @@
       "type": "ModelSamplingFlux",
       "pos": [
         470,
-        780
+        1460
       ],
       "size": [
         300,
@@ -333,7 +327,7 @@
       "type": "EmptyLatentImage",
       "pos": [
         810,
-        790
+        1470
       ],
       "size": [
         260,
@@ -363,8 +357,8 @@
       "id": 9,
       "type": "KSampler",
       "pos": [
-        1510,
-        210
+        1980,
+        450
       ],
       "size": [
         330,
@@ -467,8 +461,8 @@
       "id": 10,
       "type": "VAELoader",
       "pos": [
-        1510,
-        620
+        1980,
+        860
       ],
       "size": [
         320,
@@ -496,8 +490,8 @@
       "id": 11,
       "type": "VAEDecode",
       "pos": [
-        1880,
-        320
+        2360,
+        560
       ],
       "size": [
         260,
@@ -534,8 +528,8 @@
       "id": 12,
       "type": "SaveImage",
       "pos": [
-        2220,
-        260
+        2700,
+        500
       ],
       "size": [
         360,
@@ -579,14 +573,222 @@
       "inputs": [],
       "outputs": [],
       "widgets_values": [
-        "Single moodboard workflow: search/click one Krea moodboard thumbnail, then queue. The selected style is applied to the prompt before Krea 2 text encoding."
+        "Mashup workflow: click one moodboard in Pick Moodboard A and one in Pick Moodboard B. The Mashup node blends them before Krea 2 text encoding."
       ]
+    },
+    {
+      "id": 14,
+      "type": "KreaMoodboardVisualBrowser",
+      "pos": [
+        60,
+        790
+      ],
+      "size": [
+        520,
+        620
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "positive",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "negative",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "title",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "uuid",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "url",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "metadata_json",
+          "type": "STRING",
+          "links": [
+            18
+          ]
+        },
+        {
+          "name": "preview",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "widgets_values": [
+        "painting",
+        "",
+        "",
+        "",
+        "",
+        "normal"
+      ],
+      "title": "Pick Moodboard B"
+    },
+    {
+      "id": 15,
+      "type": "KreaMoodboardMashup",
+      "pos": [
+        640,
+        360
+      ],
+      "size": [
+        430,
+        330
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "board_1",
+          "type": "STRING",
+          "link": 17
+        },
+        {
+          "name": "board_2",
+          "type": "STRING",
+          "link": 18
+        },
+        {
+          "name": "weight_1",
+          "type": "FLOAT",
+          "widget": {
+            "name": "weight_1"
+          },
+          "link": null
+        },
+        {
+          "name": "weight_2",
+          "type": "FLOAT",
+          "widget": {
+            "name": "weight_2"
+          },
+          "link": null
+        },
+        {
+          "name": "strength",
+          "type": "COMBO",
+          "widget": {
+            "name": "strength"
+          },
+          "link": null
+        },
+        {
+          "name": "board_3",
+          "type": "STRING",
+          "widget": {
+            "name": "board_3"
+          },
+          "link": null
+        },
+        {
+          "name": "board_4",
+          "type": "STRING",
+          "widget": {
+            "name": "board_4"
+          },
+          "link": null
+        },
+        {
+          "name": "weight_3",
+          "type": "FLOAT",
+          "widget": {
+            "name": "weight_3"
+          },
+          "link": null
+        },
+        {
+          "name": "weight_4",
+          "type": "FLOAT",
+          "widget": {
+            "name": "weight_4"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "positive",
+          "type": "STRING",
+          "links": [
+            1
+          ]
+        },
+        {
+          "name": "negative",
+          "type": "STRING",
+          "links": [
+            2
+          ]
+        },
+        {
+          "name": "title",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "metadata_json",
+          "type": "STRING",
+          "links": [
+            3
+          ]
+        },
+        {
+          "name": "preview",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "widgets_values": [
+        "",
+        "",
+        0.5,
+        0.5,
+        "normal",
+        "",
+        "",
+        1.0,
+        1.0
+      ],
+      "title": "Mash Up Selected Moodboards"
     }
   ],
   "links": [
     [
+      17,
       1,
+      5,
+      15,
+      0,
+      "STRING"
+    ],
+    [
+      18,
+      14,
+      5,
+      15,
       1,
+      "STRING"
+    ],
+    [
+      1,
+      15,
       0,
       2,
       2,
@@ -594,7 +796,7 @@
     ],
     [
       2,
-      1,
+      15,
       1,
       2,
       3,
@@ -602,8 +804,8 @@
     ],
     [
       3,
-      1,
-      5,
+      15,
+      3,
       2,
       4,
       "STRING"
@@ -707,23 +909,23 @@
   ],
   "groups": [
     {
-      "title": "1. Pick Krea moodboard",
+      "title": "1. Pick two Krea moodboards",
       "bounding": [
         40,
         95,
         560,
-        660
+        1350
       ],
       "color": "#3f789e",
       "font_size": 24
     },
     {
-      "title": "2. Apply style and encode",
+      "title": "2. Mash up and apply style",
       "bounding": [
         620,
-        95,
-        870,
-        540
+        330,
+        950,
+        400
       ],
       "color": "#596e36",
       "font_size": 24
@@ -732,7 +934,7 @@
       "title": "3. Krea 2 Turbo generation",
       "bounding": [
         40,
-        755,
+        1435,
         1810,
         210
       ],
@@ -742,10 +944,10 @@
     {
       "title": "4. Decode and save",
       "bounding": [
-        1860,
-        230,
-        760,
-        500
+        1940,
+        420,
+        820,
+        560
       ],
       "color": "#6f4b8f",
       "font_size": 24
@@ -753,7 +955,7 @@
   ],
   "config": {},
   "extra": {
-    "info": "Complete Krea 2 Turbo text-to-image workflow wired to Krea Moodboard Visual Browser."
+    "info": "Complete Krea 2 Turbo text-to-image workflow using Krea Moodboard Visual Browser plus Mashup."
   },
   "version": 0.4
 }

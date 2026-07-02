@@ -1,83 +1,243 @@
 {
   "last_node_id": 5,
-  "last_link_id": 7,
+  "last_link_id": 5,
   "nodes": [
     {
       "id": 1,
       "type": "KreaMoodboardSearch",
-      "pos": [120, 120],
-      "size": [360, 220],
+      "pos": [
+        120,
+        120
+      ],
+      "size": [
+        360,
+        220
+      ],
       "flags": {},
       "order": 0,
       "mode": 0,
       "inputs": [],
       "outputs": [
-        { "name": "positive", "type": "STRING", "links": null },
-        { "name": "negative", "type": "STRING", "links": null },
-        { "name": "title", "type": "STRING", "links": null },
-        { "name": "metadata_json", "type": "STRING", "links": [1] },
-        { "name": "preview", "type": "STRING", "links": null }
+        {
+          "name": "positive",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "negative",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "title",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "metadata_json",
+          "type": "STRING",
+          "links": [
+            1
+          ]
+        },
+        {
+          "name": "preview",
+          "type": "STRING",
+          "links": null
+        }
       ],
-      "widgets_values": ["dark teal gothic", 5, 1, 0, 0, "normal", "balanced"]
+      "widgets_values": [
+        "dark teal gothic",
+        5,
+        1,
+        0,
+        0,
+        "normal",
+        "balanced"
+      ]
     },
     {
       "id": 2,
       "type": "KreaMoodboardSearch",
-      "pos": [120, 420],
-      "size": [360, 220],
+      "pos": [
+        120,
+        420
+      ],
+      "size": [
+        360,
+        220
+      ],
       "flags": {},
       "order": 1,
       "mode": 0,
       "inputs": [],
       "outputs": [
-        { "name": "positive", "type": "STRING", "links": null },
-        { "name": "negative", "type": "STRING", "links": null },
-        { "name": "title", "type": "STRING", "links": null },
-        { "name": "metadata_json", "type": "STRING", "links": [2] },
-        { "name": "preview", "type": "STRING", "links": null }
+        {
+          "name": "positive",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "negative",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "title",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "metadata_json",
+          "type": "STRING",
+          "links": [
+            2
+          ]
+        },
+        {
+          "name": "preview",
+          "type": "STRING",
+          "links": null
+        }
       ],
-      "widgets_values": ["warm pastel product", 5, 1, 0, 0, "normal", "balanced"]
+      "widgets_values": [
+        "warm pastel product",
+        5,
+        1,
+        0,
+        0,
+        "normal",
+        "balanced"
+      ]
     },
     {
       "id": 3,
       "type": "KreaMoodboardMashup",
-      "pos": [560, 180],
-      "size": [420, 300],
+      "pos": [
+        560,
+        180
+      ],
+      "size": [
+        420,
+        300
+      ],
       "flags": {},
       "order": 2,
       "mode": 0,
       "inputs": [
-        { "name": "board_1", "type": "STRING", "link": 1 },
-        { "name": "board_2", "type": "STRING", "link": 2 }
+        {
+          "name": "board_1",
+          "type": "STRING",
+          "link": 1
+        },
+        {
+          "name": "board_2",
+          "type": "STRING",
+          "link": 2
+        }
       ],
       "outputs": [
-        { "name": "positive", "type": "STRING", "links": [3] },
-        { "name": "negative", "type": "STRING", "links": [4] },
-        { "name": "title", "type": "STRING", "links": null },
-        { "name": "metadata_json", "type": "STRING", "links": [5] },
-        { "name": "preview", "type": "STRING", "links": null }
+        {
+          "name": "positive",
+          "type": "STRING",
+          "links": [
+            3
+          ]
+        },
+        {
+          "name": "negative",
+          "type": "STRING",
+          "links": [
+            4
+          ]
+        },
+        {
+          "name": "title",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "metadata_json",
+          "type": "STRING",
+          "links": [
+            5
+          ]
+        },
+        {
+          "name": "preview",
+          "type": "STRING",
+          "links": null
+        }
       ],
-      "widgets_values": ["", "", 0.65, 0.35, "normal", "", "", 1.0, 1.0]
+      "widgets_values": [
+        "",
+        "",
+        0.65,
+        0.35,
+        "normal",
+        "",
+        "",
+        1.0,
+        1.0
+      ]
     },
     {
       "id": 4,
       "type": "KreaMoodboardApply",
-      "pos": [1040, 180],
-      "size": [420, 280],
+      "pos": [
+        1040,
+        180
+      ],
+      "size": [
+        420,
+        280
+      ],
       "flags": {},
       "order": 3,
       "mode": 0,
       "inputs": [
-        { "name": "prompt", "type": "STRING", "link": null },
-        { "name": "negative_prompt", "type": "STRING", "link": null },
-        { "name": "moodboard_positive", "type": "STRING", "link": 3 },
-        { "name": "moodboard_negative", "type": "STRING", "link": 4 },
-        { "name": "metadata_json", "type": "STRING", "link": 5 }
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "link": null
+        },
+        {
+          "name": "negative_prompt",
+          "type": "STRING",
+          "link": null
+        },
+        {
+          "name": "moodboard_positive",
+          "type": "STRING",
+          "link": 3
+        },
+        {
+          "name": "moodboard_negative",
+          "type": "STRING",
+          "link": 4
+        },
+        {
+          "name": "metadata_json",
+          "type": "STRING",
+          "link": 5
+        }
       ],
       "outputs": [
-        { "name": "positive", "type": "STRING", "links": null },
-        { "name": "negative", "type": "STRING", "links": null },
-        { "name": "metadata_json", "type": "STRING", "links": null }
+        {
+          "name": "positive",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "negative",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "metadata_json",
+          "type": "STRING",
+          "links": null
+        }
       ],
       "widgets_values": [
         "a ceramic fox on a table, editorial product photo",
@@ -92,11 +252,46 @@
     }
   ],
   "links": [
-    [1, 1, 3, 3, 0, "STRING"],
-    [2, 2, 3, 3, 1, "STRING"],
-    [3, 3, 0, 4, 2, "STRING"],
-    [4, 3, 1, 4, 3, "STRING"],
-    [5, 3, 3, 4, 4, "STRING"]
+    [
+      1,
+      1,
+      3,
+      3,
+      0,
+      "STRING"
+    ],
+    [
+      2,
+      2,
+      3,
+      3,
+      1,
+      "STRING"
+    ],
+    [
+      3,
+      3,
+      0,
+      4,
+      2,
+      "STRING"
+    ],
+    [
+      4,
+      3,
+      1,
+      4,
+      3,
+      "STRING"
+    ],
+    [
+      5,
+      3,
+      3,
+      4,
+      4,
+      "STRING"
+    ]
   ],
   "groups": [],
   "config": {},

@@ -24,3 +24,5 @@ def test_example_workflows_are_valid_json() -> None:
         payload = json.loads(path.read_text(encoding="utf-8"))
         assert payload.get("nodes"), path
         assert payload.get("version"), path
+        if payload.get("links"):
+            assert payload.get("last_link_id") == max(link[0] for link in payload["links"]), path

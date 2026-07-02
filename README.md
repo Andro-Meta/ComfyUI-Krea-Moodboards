@@ -190,13 +190,14 @@ Looks up one moodboard by exact title, slug, UUID, URL, or search phrase. This a
 
 ### Ready-To-Load Workflow
 
-Use this complete workflow when you want the visual moodboard browser already wired into Krea 2 Turbo text-to-image:
+Use these complete workflows when you want the visual moodboard browser already wired into Krea 2 Turbo text-to-image:
 
 ```text
 examples/krea2_visual_moodboard_t2i_workflow.json
+examples/krea2_visual_moodboard_mashup_t2i_workflow.json
 ```
 
-It wires:
+The single-board workflow wires:
 
 ```text
 Krea Moodboard Visual Browser
@@ -206,6 +207,8 @@ Krea Moodboard Visual Browser
   -> Qwen Image VAE Decode
   -> Save Image
 ```
+
+The mashup workflow wires two visual browsers into `Krea Moodboard Mashup`, then sends the blended style through the same Krea 2 generation path.
 
 ### Official Turbo Workflow
 
