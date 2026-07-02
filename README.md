@@ -238,7 +238,7 @@ git clone https://github.com/Andro-Meta/ComfyUI-Krea-Moodboards.git
 Restart ComfyUI. The nodes appear under:
 
 ```text
-Krea / Moodboards
+Andro.Meta / Moodboards
 ```
 
 There are no required Python dependencies beyond the standard library.

@@ -36,6 +36,7 @@ except ImportError:
 STRENGTHS = ["concise", "normal", "strong"]
 SEPARATORS = ["newline", "comma"]
 RANDOM_MODES = ["balanced", "any", "non_photo", "photo"]
+NODE_CATEGORY = "Andro.Meta/Moodboards"
 
 
 @lru_cache(maxsize=1)
@@ -44,7 +45,7 @@ def _catalog():
 
 
 class KreaMoodboardStyle:
-    CATEGORY = "Krea/Moodboards"
+    CATEGORY = NODE_CATEGORY
     RETURN_TYPES = ("STRING", "STRING", "STRING", "STRING")
     RETURN_NAMES = ("positive", "negative", "title", "metadata_json")
     FUNCTION = "style"
@@ -79,7 +80,7 @@ class KreaMoodboardStyle:
 
 
 class KreaMoodboardCatalogBrowser:
-    CATEGORY = "Krea/Moodboards"
+    CATEGORY = NODE_CATEGORY
     RETURN_TYPES = ("STRING", "STRING")
     RETURN_NAMES = ("catalog_text", "catalog_json")
     FUNCTION = "browse"
@@ -120,7 +121,7 @@ class KreaMoodboardCatalogBrowser:
 
 
 class KreaMoodboardVisualBrowser:
-    CATEGORY = "Krea/Moodboards"
+    CATEGORY = NODE_CATEGORY
     RETURN_TYPES = ("STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING")
     RETURN_NAMES = ("positive", "negative", "title", "uuid", "url", "metadata_json", "preview")
     FUNCTION = "select"
@@ -170,7 +171,7 @@ class KreaMoodboardVisualBrowser:
 
 
 class KreaMoodboardSearch:
-    CATEGORY = "Krea/Moodboards"
+    CATEGORY = NODE_CATEGORY
     RETURN_TYPES = ("STRING", "STRING", "STRING", "STRING", "STRING")
     RETURN_NAMES = ("positive", "negative", "title", "metadata_json", "preview")
     FUNCTION = "search"
@@ -261,7 +262,7 @@ class KreaMoodboardSearch:
 
 
 class KreaMoodboardRandom:
-    CATEGORY = "Krea/Moodboards"
+    CATEGORY = NODE_CATEGORY
     RETURN_TYPES = ("STRING", "STRING", "STRING", "STRING")
     RETURN_NAMES = ("positive", "negative", "title", "metadata_json")
     FUNCTION = "random_style"
@@ -315,7 +316,7 @@ class KreaMoodboardRandom:
 
 
 class KreaMoodboardMashup:
-    CATEGORY = "Krea/Moodboards"
+    CATEGORY = NODE_CATEGORY
     RETURN_TYPES = ("STRING", "STRING", "STRING", "STRING", "STRING")
     RETURN_NAMES = ("positive", "negative", "title", "metadata_json", "preview")
     FUNCTION = "mashup"
@@ -388,7 +389,7 @@ class KreaMoodboardMashup:
 
 
 class KreaMoodboardApply:
-    CATEGORY = "Krea/Moodboards"
+    CATEGORY = NODE_CATEGORY
     RETURN_TYPES = ("STRING", "STRING", "STRING")
     RETURN_NAMES = ("positive", "negative", "metadata_json")
     FUNCTION = "apply"
