@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 
-KEEP_FIELDS = ("url", "slug", "uuid", "title", "taste_profile", "keywords", "qwen_guidance")
+KEEP_FIELDS = ("url", "slug", "uuid", "title", "taste_profile", "keywords", "primary_image_url", "qwen_guidance")
 GUIDANCE_FIELDS = (
     "prompt_guidance",
     "negative_guidance",

@@ -7,6 +7,7 @@ try:
     from .moodboard_catalog import (
         CATALOG_PATH,
         apply_style_to_prompt,
+        catalog_cards,
         catalog_listing,
         find_board,
         load_catalog,
@@ -20,6 +21,7 @@ except ImportError:
     from moodboard_catalog import (
         CATALOG_PATH,
         apply_style_to_prompt,
+        catalog_cards,
         catalog_listing,
         find_board,
         load_catalog,
@@ -115,6 +117,56 @@ class KreaMoodboardCatalogBrowser:
     def browse(self, query: str, page: int, page_size: int):
         listing = catalog_listing(_catalog(), query=query, page=page, page_size=page_size)
         return listing["catalog_text"], listing["catalog_json"]
+
+
+class KreaMoodboardVisualBrowser:
+    CATEGORY = "Krea/Moodboards"
+    RETURN_TYPES = ("STRING", "STRING", "STRING", "STRING", "STRING", "STRING", "STRING")
+    RETURN_NAMES = ("positive", "negative", "title", "uuid", "url", "metadata_json", "preview")
+    FUNCTION = "select"
+    DESCRIPTION = "Visual Krea moodboard picker with search, public Krea thumbnails, and local browser favorites."
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "query": ("STRING", {"default": "", "multiline": False}),
+                "selected_uuid": ("STRING", {"default": "", "multiline": False}),
+                "selected_title": ("STRING", {"default": "", "multiline": False}),
+                "selected_url": ("STRING", {"default": "", "multiline": False}),
+                "selected_metadata_json": ("STRING", {"default": "", "multiline": True}),
+                "strength": (STRENGTHS, {"default": "normal"}),
+            }
+        }
+
+    def select(
+        self,
+        query: str,
+        selected_uuid: str,
+        selected_title: str,
+        selected_url: str,
+        selected_metadata_json: str,
+        strength: str,
+    ):
+        catalog = _catalog()
+        board_ref = selected_metadata_json or selected_uuid or selected_url or selected_title or query
+        board = resolve_board_reference(catalog, board_ref)
+        style = style_from_board(board, strength=strength)
+        metadata = json.loads(style["metadata_json"])
+        preview = (
+            f"Selected: {style['title']}\n"
+            f"UUID: {metadata.get('uuid', '')}\n"
+            f"URL: {metadata.get('url', '')}"
+        )
+        return (
+            style["positive"],
+            style["negative"],
+            style["title"],
+            str(metadata.get("uuid", "")),
+            str(metadata.get("url", "")),
+            style["metadata_json"],
+            preview,
+        )
 
 
 class KreaMoodboardSearch:

@@ -11,6 +11,7 @@ data/krea_moodboards_slim.json
 It includes moodboard metadata and prompt guidance:
 
 - source Krea moodboard URL
+- public Krea thumbnail URL
 - slug and UUID
 - title
 - taste profile
@@ -25,7 +26,7 @@ It does not include:
 
 - Krea moodboard images
 - downloaded image files
-- image URL lists
+- full image URL lists
 - Krea model weights
 - ComfyUI model weights
 

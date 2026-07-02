@@ -30,6 +30,7 @@ def write_catalog(path: Path) -> Path:
                 "title": "Abyssal Gothic",
                 "taste_profile": "Deep teal gothic shadows and painterly dread.",
                 "keywords": ["gothic romanticism", "deep teal", "chiaroscuro"],
+                "primary_image_url": "https://optim-images.krea.ai/abyssal.webp",
                 "qwen_guidance": {
                     "prompt_guidance": "Apply deep teal palette, gothic chiaroscuro, painterly texture, and solemn atmosphere.",
                     "negative_guidance": "Avoid flat bright daylight.",
@@ -46,6 +47,7 @@ def write_catalog(path: Path) -> Path:
                 "title": "Warm Product Pastel",
                 "taste_profile": "Soft product photography with luminous pastel surfaces.",
                 "keywords": ["product photo", "warm pastel", "minimal"],
+                "primary_image_url": "https://optim-images.krea.ai/pastel.webp",
                 "qwen_guidance": {
                     "prompt_guidance": "Use warm pastel product lighting, smooth surfaces, and restrained editorial composition.",
                     "negative_guidance": "Avoid harsh grunge contrast.",
@@ -67,6 +69,7 @@ def test_load_catalog_preserves_source_urls_and_skips_image_fields(tmp_path: Pat
     assert len(catalog) == 2
     assert catalog[0]["title"] == "Abyssal Gothic"
     assert catalog[0]["url"].startswith("https://www.krea.ai/moodboard-feed/")
+    assert catalog[0]["primary_image_url"] == "https://optim-images.krea.ai/abyssal.webp"
     assert "image_urls" not in catalog[0]
 
 
@@ -108,6 +111,20 @@ def test_catalog_listing_outputs_titles_uuids_links_and_json(tmp_path: Path) -> 
     assert data["items"][0]["title"] == "Abyssal Gothic"
     assert data["items"][0]["uuid"] == "11111111-1111-5111-9111-111111111111"
     assert data["items"][0]["url"].startswith("https://www.krea.ai/moodboard-feed/")
+    assert data["items"][0]["thumbnail_url"] == "https://optim-images.krea.ai/abyssal.webp"
+
+
+def test_catalog_cards_include_thumbnail_and_selected_metadata(tmp_path: Path) -> None:
+    from moodboard_catalog import catalog_cards
+
+    catalog = load_catalog(write_catalog(tmp_path / "catalog.json"))
+
+    cards = catalog_cards(catalog, query="warm", limit=5)
+
+    assert cards["total"] == 1
+    assert cards["items"][0]["title"] == "Warm Product Pastel"
+    assert cards["items"][0]["thumbnail_url"] == "https://optim-images.krea.ai/pastel.webp"
+    assert json.loads(cards["items"][0]["metadata_json"])["uuid"] == "22222222-2222-5222-9222-222222222222"
 
 
 def test_random_board_is_deterministic_and_can_use_top_matches(tmp_path: Path) -> None:

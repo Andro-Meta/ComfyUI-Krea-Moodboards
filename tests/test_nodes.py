@@ -13,9 +13,11 @@ def test_node_mappings_are_registered() -> None:
     import __init__ as package
 
     assert "KreaMoodboardCatalogBrowser" in package.NODE_CLASS_MAPPINGS
+    assert "KreaMoodboardVisualBrowser" in package.NODE_CLASS_MAPPINGS
     assert "KreaMoodboardSearch" in package.NODE_CLASS_MAPPINGS
     assert "KreaMoodboardApply" in package.NODE_CLASS_MAPPINGS
     assert package.NODE_DISPLAY_NAME_MAPPINGS["KreaMoodboardCatalogBrowser"] == "Krea Moodboard Catalog Browser"
+    assert package.NODE_DISPLAY_NAME_MAPPINGS["KreaMoodboardVisualBrowser"] == "Krea Moodboard Visual Browser"
     assert package.NODE_DISPLAY_NAME_MAPPINGS["KreaMoodboardApply"] == "Krea Moodboard Apply"
 
 
@@ -97,6 +99,43 @@ def test_catalog_browser_node_outputs_uuid_name_and_link_list(monkeypatch) -> No
     assert "[Gothic Teal](https://www.krea.ai/moodboard-feed/example)" in catalog_text
     assert "UUID: abc" in catalog_text
     assert json.loads(catalog_json)["items"][0]["uuid"] == "abc"
+
+
+def test_visual_browser_outputs_selected_board(monkeypatch) -> None:
+    board = {
+        "url": "https://www.krea.ai/moodboard-feed/example",
+        "slug": "example",
+        "uuid": "abc",
+        "title": "Gothic Teal",
+        "taste_profile": "Deep teal gothic style.",
+        "keywords": ["gothic", "teal"],
+        "primary_image_url": "https://optim-images.krea.ai/thumb.webp",
+        "qwen_guidance": {
+            "prompt_guidance": "Use deep teal gothic lighting.",
+            "negative_guidance": "Avoid flat daylight.",
+            "style_axes": ["deep teal"],
+            "conditioning_notes": [],
+            "source_summary": "summary",
+        },
+    }
+    monkeypatch.setattr(nodes, "_catalog", lambda: [board])
+
+    positive, negative, title, uuid, url, metadata_json, preview = nodes.KreaMoodboardVisualBrowser().select(
+        query="",
+        selected_uuid="abc",
+        selected_title="",
+        selected_url="",
+        selected_metadata_json="",
+        strength="normal",
+    )
+
+    assert title == "Gothic Teal"
+    assert uuid == "abc"
+    assert url == "https://www.krea.ai/moodboard-feed/example"
+    assert "Apply this Krea moodboard style" in positive
+    assert negative == "Avoid flat daylight."
+    assert json.loads(metadata_json)["uuid"] == "abc"
+    assert "Gothic Teal" in preview
 
 
 def test_apply_node_combines_prompt_and_style_metadata() -> None:

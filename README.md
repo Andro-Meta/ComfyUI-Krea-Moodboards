@@ -8,8 +8,19 @@ This is unofficial and is not affiliated with Krea AI.
 
 For one moodboard style:
 
+1. Add `Krea Moodboard Visual Browser`.
+2. Search a style idea, for example `dark teal gothic`, `anime`, or `warm pastel product`.
+3. Click a moodboard card. Use the star button to save favorites locally in your browser.
+4. Add `Krea Moodboard Apply`.
+5. Connect `Visual Browser.positive` to `Apply.moodboard_positive`.
+6. Connect `Visual Browser.negative` to `Apply.moodboard_negative`.
+7. Type your normal image prompt in `Apply.prompt`.
+8. Connect `Apply.positive` to the Krea 2 workflow prompt input.
+
+Text-only fallback:
+
 1. Add `Krea Moodboard Search`.
-2. Type a style idea, for example `dark teal gothic`, `anime`, or `warm pastel product`.
+2. Type a style idea.
 3. Add `Krea Moodboard Apply`.
 4. Connect `Search.positive` to `Apply.moodboard_positive`.
 5. Connect `Search.negative` to `Apply.moodboard_negative`.
@@ -58,6 +69,28 @@ https://www.krea.ai/app?gallery=moodboards
 Search or browse there, then use the same style names or aesthetic terms in `Krea Moodboard Search`. Each node returns `metadata_json` with the original Krea moodboard `url`, so you can click through and visually inspect the selected source moodboard.
 
 ## Nodes
+
+### Krea Moodboard Visual Browser
+
+Searchable thumbnail browser inside the ComfyUI node. It uses public Krea thumbnail URLs from the bundled catalog, does not download or bundle images, and stores favorites in your browser `localStorage`.
+
+Use it when you want to visually pick a moodboard without copying UUIDs.
+
+Inputs:
+
+- `query`: search text used by the visual gallery.
+- `selected_uuid`, `selected_title`, `selected_url`, `selected_metadata_json`: filled by the gallery when you click a card.
+- `strength`: prompt detail level.
+
+Outputs:
+
+- `positive`: selected moodboard style text.
+- `negative`: selected moodboard negative guidance.
+- `title`: selected moodboard title.
+- `uuid`: selected moodboard UUID.
+- `url`: source Krea moodboard URL.
+- `metadata_json`: connect this to Mashup `board_1`-`board_4`.
+- `preview`: selected title, UUID, and URL.
 
 ### Krea Moodboard Catalog Browser
 

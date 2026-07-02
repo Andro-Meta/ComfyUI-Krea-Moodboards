@@ -12,6 +12,7 @@ def test_bundled_catalog_contains_prompt_only_krea_moodboards() -> None:
     assert len(catalog) == 2500
     assert all(board.get("url", "").startswith("https://www.krea.ai/moodboard-feed/") for board in catalog)
     assert all("image_urls" not in board for board in catalog)
+    assert all(board.get("primary_image_url", "").startswith("https://optim-images.krea.ai/") for board in catalog)
     assert all(board.get("qwen_guidance", {}).get("prompt_guidance") for board in catalog)
 
 

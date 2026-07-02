@@ -76,6 +76,7 @@ def load_catalog(path: str | Path = CATALOG_PATH) -> list[dict[str, Any]]:
             "title": title,
             "taste_profile": str(item.get("taste_profile") or "").strip(),
             "keywords": _string_list(item.get("keywords")),
+            "primary_image_url": str(item.get("primary_image_url") or "").strip(),
             "qwen_guidance": {
                 "prompt_guidance": prompt_guidance,
                 "negative_guidance": str(guidance.get("negative_guidance") or "").strip(),
@@ -145,6 +146,28 @@ def catalog_listing(
     return {
         "catalog_text": text,
         "catalog_json": json.dumps(payload, ensure_ascii=False, sort_keys=True),
+    }
+
+
+def catalog_cards(
+    catalog: list[dict[str, Any]],
+    *,
+    query: str = "",
+    limit: int = 60,
+) -> dict[str, Any]:
+    safe_limit = max(1, min(int(limit or 60), 250))
+    if str(query or "").strip():
+        matches = search_boards(catalog, query, top_k=safe_limit, min_score=1)
+        items = [match["board"] for match in matches]
+        total = len(items)
+    else:
+        items = sorted(catalog, key=lambda board: str(board.get("title") or ""))[:safe_limit]
+        total = len(catalog)
+    return {
+        "query": str(query or ""),
+        "limit": safe_limit,
+        "total": total,
+        "items": [_catalog_card(board) for board in items[:safe_limit]],
     }
 
 
@@ -425,10 +448,24 @@ def _catalog_item_summary(board: dict[str, Any]) -> dict[str, Any]:
         "uuid": str(board.get("uuid") or ""),
         "slug": str(board.get("slug") or ""),
         "url": str(board.get("url") or ""),
+        "thumbnail_url": str(board.get("primary_image_url") or ""),
         "keywords": _string_list(board.get("keywords")),
         "style_axes": _string_list(guidance.get("style_axes")),
         "source_summary": str(guidance.get("source_summary") or ""),
     }
+
+
+def _catalog_card(board: dict[str, Any]) -> dict[str, Any]:
+    summary = _catalog_item_summary(board)
+    style = style_from_board(board, strength="normal")
+    summary.update(
+        {
+            "metadata_json": style["metadata_json"],
+            "positive": style["positive"],
+            "negative": style["negative"],
+        }
+    )
+    return summary
 
 
 def _catalog_row(board: dict[str, Any], *, index: int) -> str:
