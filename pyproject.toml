@@ -1,6 +1,6 @@
 [project]
 name = "comfyui-krea-moodboards"
-version = "0.1.6"
+version = "0.1.7"
 description = "Prompt-only Krea moodboard search and style nodes for ComfyUI."
 readme = "README.md"
 requires-python = ">=3.10"

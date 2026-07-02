@@ -188,6 +188,25 @@ Looks up one moodboard by exact title, slug, UUID, URL, or search phrase. This a
 
 ## Recommended Krea 2 Wiring
 
+### Ready-To-Load Workflow
+
+Use this complete workflow when you want the visual moodboard browser already wired into Krea 2 Turbo text-to-image:
+
+```text
+examples/krea2_visual_moodboard_t2i_workflow.json
+```
+
+It wires:
+
+```text
+Krea Moodboard Visual Browser
+  -> Krea Moodboard Apply
+  -> TextEncodeKrea2 positive/negative
+  -> KSampler
+  -> Qwen Image VAE Decode
+  -> Save Image
+```
+
 ### Official Turbo Workflow
 
 1. Load the official Krea 2 Turbo workflow from ComfyUI's template library.

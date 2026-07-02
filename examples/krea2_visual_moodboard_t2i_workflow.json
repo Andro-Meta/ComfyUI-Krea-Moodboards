@@ -1,0 +1,275 @@
+{
+  "last_node_id": 13,
+  "last_link_id": 16,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "KreaMoodboardVisualBrowser",
+      "pos": [60, 120],
+      "size": [520, 620],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        { "name": "positive", "type": "STRING", "links": [1] },
+        { "name": "negative", "type": "STRING", "links": [2] },
+        { "name": "title", "type": "STRING", "links": [14] },
+        { "name": "uuid", "type": "STRING", "links": null },
+        { "name": "url", "type": "STRING", "links": null },
+        { "name": "metadata_json", "type": "STRING", "links": [3] },
+        { "name": "preview", "type": "STRING", "links": null }
+      ],
+      "widgets_values": ["horror", "", "", "", "", "normal"],
+      "title": "Pick Krea Moodboard"
+    },
+    {
+      "id": 2,
+      "type": "KreaMoodboardApply",
+      "pos": [640, 130],
+      "size": [430, 300],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        { "name": "prompt", "type": "STRING", "link": null },
+        { "name": "negative_prompt", "type": "STRING", "link": null },
+        { "name": "moodboard_positive", "type": "STRING", "link": 1 },
+        { "name": "moodboard_negative", "type": "STRING", "link": 2 },
+        { "name": "metadata_json", "type": "STRING", "link": 3 }
+      ],
+      "outputs": [
+        { "name": "positive", "type": "STRING", "links": [4] },
+        { "name": "negative", "type": "STRING", "links": [5] },
+        { "name": "metadata_json", "type": "STRING", "links": null }
+      ],
+      "widgets_values": [
+        "a cinematic portrait of a glass fox in a moonlit forest",
+        "",
+        "",
+        "",
+        "{}",
+        "normal",
+        false,
+        "newline"
+      ],
+      "title": "Apply Moodboard To Prompt"
+    },
+    {
+      "id": 3,
+      "type": "CLIPLoader",
+      "pos": [640, 500],
+      "size": [340, 110],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        { "name": "CLIP", "type": "CLIP", "links": [6, 7] }
+      ],
+      "widgets_values": ["Huihui-Qwen3-VL-4B-Instruct-abliterated-fp8_scaled.safetensors", "krea2", "default"],
+      "title": "Load Krea 2 Text Encoder"
+    },
+    {
+      "id": 4,
+      "type": "TextEncodeKrea2",
+      "pos": [1110, 120],
+      "size": [360, 150],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        { "name": "clip", "type": "CLIP", "link": 6 },
+        { "name": "prompt", "type": "STRING", "link": 4 }
+      ],
+      "outputs": [
+        { "name": "CONDITIONING", "type": "CONDITIONING", "links": [8] }
+      ],
+      "widgets_values": ["", false],
+      "title": "Encode Positive"
+    },
+    {
+      "id": 5,
+      "type": "TextEncodeKrea2",
+      "pos": [1110, 310],
+      "size": [360, 150],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        { "name": "clip", "type": "CLIP", "link": 7 },
+        { "name": "prompt", "type": "STRING", "link": 5 }
+      ],
+      "outputs": [
+        { "name": "CONDITIONING", "type": "CONDITIONING", "links": [9] }
+      ],
+      "widgets_values": ["", false],
+      "title": "Encode Negative"
+    },
+    {
+      "id": 6,
+      "type": "UNETLoader",
+      "pos": [60, 800],
+      "size": [360, 90],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        { "name": "MODEL", "type": "MODEL", "links": [10] }
+      ],
+      "widgets_values": ["krea2_turbo_fp8_scaled.safetensors", "default"],
+      "title": "Load Krea 2 Turbo"
+    },
+    {
+      "id": 7,
+      "type": "ModelSamplingFlux",
+      "pos": [470, 780],
+      "size": [300, 150],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        { "name": "model", "type": "MODEL", "link": 10 }
+      ],
+      "outputs": [
+        { "name": "MODEL", "type": "MODEL", "links": [11] }
+      ],
+      "widgets_values": [1.15, 0.5, 1024, 1024],
+      "title": "Krea 2 Sampling Shift"
+    },
+    {
+      "id": 8,
+      "type": "EmptyLatentImage",
+      "pos": [810, 790],
+      "size": [260, 110],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        { "name": "LATENT", "type": "LATENT", "links": [12] }
+      ],
+      "widgets_values": [1024, 1024, 1],
+      "title": "1024x1024 Latent"
+    },
+    {
+      "id": 9,
+      "type": "KSampler",
+      "pos": [1510, 210],
+      "size": [330, 320],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        { "name": "model", "type": "MODEL", "link": 11 },
+        { "name": "seed", "type": "INT", "widget": { "name": "seed" }, "link": null },
+        { "name": "steps", "type": "INT", "widget": { "name": "steps" }, "link": null },
+        { "name": "cfg", "type": "FLOAT", "widget": { "name": "cfg" }, "link": null },
+        { "name": "sampler_name", "type": "COMBO", "widget": { "name": "sampler_name" }, "link": null },
+        { "name": "scheduler", "type": "COMBO", "widget": { "name": "scheduler" }, "link": null },
+        { "name": "positive", "type": "CONDITIONING", "link": 8 },
+        { "name": "negative", "type": "CONDITIONING", "link": 9 },
+        { "name": "latent_image", "type": "LATENT", "link": 12 },
+        { "name": "denoise", "type": "FLOAT", "widget": { "name": "denoise" }, "link": null }
+      ],
+      "outputs": [
+        { "name": "LATENT", "type": "LATENT", "links": [13] }
+      ],
+      "widgets_values": [123456789, 8, 1.0, "euler", "simple", 1.0],
+      "title": "Krea 2 Turbo Sampler"
+    },
+    {
+      "id": 10,
+      "type": "VAELoader",
+      "pos": [1510, 620],
+      "size": [320, 80],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        { "name": "VAE", "type": "VAE", "links": [15] }
+      ],
+      "widgets_values": ["qwen_image_vae.safetensors"],
+      "title": "Load Qwen Image VAE"
+    },
+    {
+      "id": 11,
+      "type": "VAEDecode",
+      "pos": [1880, 320],
+      "size": [260, 90],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        { "name": "samples", "type": "LATENT", "link": 13 },
+        { "name": "vae", "type": "VAE", "link": 15 }
+      ],
+      "outputs": [
+        { "name": "IMAGE", "type": "IMAGE", "links": [16] }
+      ],
+      "widgets_values": [],
+      "title": "Decode"
+    },
+    {
+      "id": 12,
+      "type": "SaveImage",
+      "pos": [2220, 260],
+      "size": [360, 420],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        { "name": "images", "type": "IMAGE", "link": 16 },
+        { "name": "filename_prefix", "type": "STRING", "link": 14 }
+      ],
+      "outputs": [],
+      "widgets_values": ["Krea_Moodboard"],
+      "title": "Save With Moodboard Name"
+    },
+    {
+      "id": 13,
+      "type": "Note",
+      "pos": [60, 30],
+      "size": [700, 70],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "widgets_values": [
+        "Use the Visual Browser: search, click a Krea moodboard thumbnail, then queue. The selected style is applied to the prompt and the source moodboard title is used in the filename."
+      ]
+    }
+  ],
+  "links": [
+    [1, 1, 0, 2, 2, "STRING"],
+    [2, 1, 1, 2, 3, "STRING"],
+    [3, 1, 5, 2, 4, "STRING"],
+    [4, 2, 0, 4, 1, "STRING"],
+    [5, 2, 1, 5, 1, "STRING"],
+    [6, 3, 0, 4, 0, "CLIP"],
+    [7, 3, 0, 5, 0, "CLIP"],
+    [8, 4, 0, 9, 6, "CONDITIONING"],
+    [9, 5, 0, 9, 7, "CONDITIONING"],
+    [10, 6, 0, 7, 0, "MODEL"],
+    [11, 7, 0, 9, 0, "MODEL"],
+    [12, 8, 0, 9, 8, "LATENT"],
+    [13, 9, 0, 11, 0, "LATENT"],
+    [14, 1, 2, 12, 1, "STRING"],
+    [15, 10, 0, 11, 1, "VAE"],
+    [16, 11, 0, 12, 0, "IMAGE"]
+  ],
+  "groups": [
+    { "title": "1. Pick Krea moodboard", "bounding": [40, 95, 560, 660], "color": "#3f789e", "font_size": 24 },
+    { "title": "2. Apply style and encode", "bounding": [620, 95, 870, 540], "color": "#596e36", "font_size": 24 },
+    { "title": "3. Krea 2 Turbo generation", "bounding": [40, 755, 1810, 210], "color": "#8e6a35", "font_size": 24 },
+    { "title": "4. Decode and save", "bounding": [1860, 230, 760, 500], "color": "#6f4b8f", "font_size": 24 }
+  ],
+  "config": {},
+  "extra": {
+    "info": "Complete Krea 2 Turbo text-to-image workflow wired to Krea Moodboard Visual Browser."
+  },
+  "version": 0.4
+}
