@@ -176,6 +176,16 @@ def catalog_cards(
     }
 
 
+def catalog_cards_by_uuid(catalog: list[dict[str, Any]], uuids: list[str]) -> dict[str, Any]:
+    by_uuid = {str(board.get("uuid") or ""): board for board in catalog}
+    items = [
+        _catalog_card(by_uuid[uuid])
+        for uuid in [str(value or "").strip() for value in uuids]
+        if uuid in by_uuid
+    ]
+    return {"total": len(items), "items": items}
+
+
 def random_board(
     catalog: list[dict[str, Any]],
     *,

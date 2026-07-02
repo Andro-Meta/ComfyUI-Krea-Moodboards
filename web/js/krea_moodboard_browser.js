@@ -46,6 +46,14 @@ async function fetchCards(query, offset = 0) {
   return response.json();
 }
 
+async function fetchFavoriteCards(uuids) {
+  if (!uuids.length) return { total: 0, items: [] };
+  const url = `/krea_moodboards/by_uuid?uuids=${encodeURIComponent(uuids.join(","))}`;
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Favorites request failed: ${response.status}`);
+  return response.json();
+}
+
 function selectedUuid(node) {
   return widget(node, "selected_uuid")?.value || "";
 }
@@ -109,6 +117,7 @@ function buildBrowser(node) {
 
   let cards = [];
   let showingFavorites = false;
+  let favoriteCards = [];
   let total = 0;
   let currentQuery = search.value || "";
 
@@ -137,10 +146,10 @@ function buildBrowser(node) {
 
   function render() {
     const favs = getFavorites();
-    const visible = showingFavorites ? cards.filter((card) => favs.includes(card.uuid)) : cards;
+    const visible = showingFavorites ? favoriteCards : cards;
     grid.replaceChildren();
     status.textContent = showingFavorites
-      ? `Showing ${visible.length} favorite moodboard${visible.length === 1 ? "" : "s"}.`
+      ? `Showing ${visible.length} saved favorite moodboard${visible.length === 1 ? "" : "s"}.`
       : `Showing ${cards.length} of ${total} moodboards${currentQuery ? ` for "${currentQuery}"` : ""}.`;
     more.style.display = !showingFavorites && cards.length < total ? "block" : "none";
     for (const card of visible) {
@@ -212,6 +221,9 @@ function buildBrowser(node) {
   }
 
   async function load({ append = false } = {}) {
+    if (append && (search.value || "") !== currentQuery) {
+      append = false;
+    }
     showingFavorites = false;
     setWidget(node, "query", search.value);
     currentQuery = search.value || "";
@@ -240,9 +252,19 @@ function buildBrowser(node) {
 
   reload.onclick = () => load();
   more.onclick = () => load({ append: true });
-  favsOnly.onclick = () => {
+  favsOnly.onclick = async () => {
     showingFavorites = !showingFavorites;
     favsOnly.textContent = showingFavorites ? "All" : "Favorites";
+    if (showingFavorites) {
+      grid.replaceChildren(css(text("div", "Loading favorites..."), { color: "#aaa", padding: "10px" }));
+      try {
+        const data = await fetchFavoriteCards(getFavorites());
+        favoriteCards = data.items || [];
+      } catch (error) {
+        grid.replaceChildren(css(text("div", String(error)), { color: "#ff8a8a", padding: "10px" }));
+        return;
+      }
+    }
     render();
   };
   search.addEventListener("keydown", (event) => {

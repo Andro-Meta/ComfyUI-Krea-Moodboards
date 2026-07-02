@@ -150,12 +150,17 @@ class KreaMoodboardVisualBrowser:
         strength: str,
     ):
         catalog = _catalog()
+        used_query_fallback = not any(
+            str(value or "").strip()
+            for value in (selected_metadata_json, selected_uuid, selected_url, selected_title)
+        )
         board_ref = selected_metadata_json or selected_uuid or selected_url or selected_title or query
         board = resolve_board_reference(catalog, board_ref)
         style = style_from_board(board, strength=strength)
         metadata = json.loads(style["metadata_json"])
+        fallback_line = f"No card selected; using best match for query: {query}\n" if used_query_fallback else ""
         preview = (
-            f"Selected: {style['title']}\n"
+            f"{fallback_line}Selected: {style['title']}\n"
             f"UUID: {metadata.get('uuid', '')}\n"
             f"URL: {metadata.get('url', '')}"
         )

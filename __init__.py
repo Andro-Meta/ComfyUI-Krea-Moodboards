@@ -58,9 +58,9 @@ try:
     from server import PromptServer
 
     try:
-        from .moodboard_catalog import CATALOG_PATH, catalog_cards, load_catalog
+        from .moodboard_catalog import CATALOG_PATH, catalog_cards, catalog_cards_by_uuid, load_catalog
     except ImportError:
-        from moodboard_catalog import CATALOG_PATH, catalog_cards, load_catalog
+        from moodboard_catalog import CATALOG_PATH, catalog_cards, catalog_cards_by_uuid, load_catalog
 
     @PromptServer.instance.routes.get("/krea_moodboards/catalog")
     async def krea_moodboards_catalog(request):
@@ -68,6 +68,11 @@ try:
         limit = int(request.rel_url.query.get("limit", 80))
         offset = int(request.rel_url.query.get("offset", 0))
         return web.json_response(catalog_cards(load_catalog(CATALOG_PATH), query=query, limit=limit, offset=offset))
+
+    @PromptServer.instance.routes.get("/krea_moodboards/by_uuid")
+    async def krea_moodboards_by_uuid(request):
+        uuids = [value for value in request.rel_url.query.get("uuids", "").split(",") if value]
+        return web.json_response(catalog_cards_by_uuid(load_catalog(CATALOG_PATH), uuids))
 except Exception:
     pass
 

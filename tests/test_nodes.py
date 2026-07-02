@@ -140,6 +140,37 @@ def test_visual_browser_outputs_selected_board(monkeypatch) -> None:
     assert "Gothic Teal" in preview
 
 
+def test_visual_browser_preview_marks_query_fallback(monkeypatch) -> None:
+    board = {
+        "url": "https://www.krea.ai/moodboard-feed/example",
+        "slug": "example",
+        "uuid": "abc",
+        "title": "Gothic Teal",
+        "taste_profile": "Deep teal gothic style.",
+        "keywords": ["gothic", "teal"],
+        "primary_image_url": "https://optim-images.krea.ai/thumb.webp",
+        "qwen_guidance": {
+            "prompt_guidance": "Use deep teal gothic lighting.",
+            "negative_guidance": "Avoid flat daylight.",
+            "style_axes": ["deep teal"],
+            "conditioning_notes": [],
+            "source_summary": "summary",
+        },
+    }
+    monkeypatch.setattr(nodes, "_catalog", lambda: [board])
+
+    *_rest, preview = nodes.KreaMoodboardVisualBrowser().select(
+        query="gothic",
+        selected_uuid="",
+        selected_title="",
+        selected_url="",
+        selected_metadata_json="",
+        strength="normal",
+    )
+
+    assert "No card selected; using best match for query: gothic" in preview
+
+
 def test_apply_node_combines_prompt_and_style_metadata() -> None:
     style = {
         "positive": "Apply this Krea moodboard style: warm pastel lighting.",

@@ -76,6 +76,8 @@ Searchable thumbnail browser inside the ComfyUI node. It uses public Krea thumbn
 
 Use it when you want to visually pick a moodboard without copying UUIDs.
 
+The gallery search box inside the node controls the browser results. `Load more` pages through the full 2500 moodboard catalog. Favorites are saved locally in your browser and can be recalled with the `Favorites` button.
+
 Inputs:
 
 - `query`: search text used by the visual gallery.

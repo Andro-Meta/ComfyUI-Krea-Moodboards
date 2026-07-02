@@ -140,6 +140,23 @@ def test_catalog_cards_support_offset_paging(tmp_path: Path) -> None:
     assert second["offset"] == 1
 
 
+def test_catalog_cards_can_fetch_specific_uuids(tmp_path: Path) -> None:
+    from moodboard_catalog import catalog_cards_by_uuid
+
+    catalog = load_catalog(write_catalog(tmp_path / "catalog.json"))
+
+    cards = catalog_cards_by_uuid(
+        catalog,
+        ["22222222-2222-5222-9222-222222222222", "missing", "11111111-1111-5111-9111-111111111111"],
+    )
+
+    assert cards["total"] == 2
+    assert [item["uuid"] for item in cards["items"]] == [
+        "22222222-2222-5222-9222-222222222222",
+        "11111111-1111-5111-9111-111111111111",
+    ]
+
+
 def test_random_board_is_deterministic_and_can_use_top_matches(tmp_path: Path) -> None:
     catalog = load_catalog(write_catalog(tmp_path / "catalog.json"))
 
