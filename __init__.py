@@ -51,7 +51,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "KreaMoodboardApply": "Krea Moodboard Apply",
 }
 
-WEB_DIRECTORY = "./web"
+WEB_DIRECTORY = "./web/js"
 
 try:
     from aiohttp import web

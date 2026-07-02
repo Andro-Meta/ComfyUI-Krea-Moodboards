@@ -20,6 +20,7 @@ def test_node_mappings_are_registered() -> None:
     assert package.NODE_DISPLAY_NAME_MAPPINGS["KreaMoodboardVisualBrowser"] == "Krea Moodboard Visual Browser"
     assert package.NODE_DISPLAY_NAME_MAPPINGS["KreaMoodboardApply"] == "Krea Moodboard Apply"
     assert package.NODE_CLASS_MAPPINGS["KreaMoodboardVisualBrowser"].CATEGORY == "Andro.Meta/Moodboards"
+    assert package.WEB_DIRECTORY == "./web/js"
 
 
 def test_package_import_does_not_fall_back_to_comfy_core_nodes(monkeypatch) -> None:
