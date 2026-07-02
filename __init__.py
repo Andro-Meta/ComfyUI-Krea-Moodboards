@@ -66,7 +66,8 @@ try:
     async def krea_moodboards_catalog(request):
         query = request.rel_url.query.get("query", "")
         limit = int(request.rel_url.query.get("limit", 80))
-        return web.json_response(catalog_cards(load_catalog(CATALOG_PATH), query=query, limit=limit))
+        offset = int(request.rel_url.query.get("offset", 0))
+        return web.json_response(catalog_cards(load_catalog(CATALOG_PATH), query=query, limit=limit, offset=offset))
 except Exception:
     pass
 

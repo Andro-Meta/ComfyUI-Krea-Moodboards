@@ -114,7 +114,7 @@ def search_boards(
                     }
                 )
         matches.sort(key=lambda match: (-int(match["score"]), str(match["board"].get("title") or "")))
-    return matches[: max(1, min(int(top_k or 5), 25))]
+    return matches[: max(1, min(int(top_k or 5), len(catalog)))]
 
 
 def catalog_listing(
@@ -154,20 +154,25 @@ def catalog_cards(
     *,
     query: str = "",
     limit: int = 60,
+    offset: int = 0,
 ) -> dict[str, Any]:
     safe_limit = max(1, min(int(limit or 60), 250))
+    safe_offset = max(0, int(offset or 0))
     if str(query or "").strip():
-        matches = search_boards(catalog, query, top_k=safe_limit, min_score=1)
-        items = [match["board"] for match in matches]
-        total = len(items)
+        matches = search_boards(catalog, query, top_k=len(catalog), min_score=1)
+        all_items = [match["board"] for match in matches]
+        items = all_items[safe_offset:safe_offset + safe_limit]
+        total = len(all_items)
     else:
-        items = sorted(catalog, key=lambda board: str(board.get("title") or ""))[:safe_limit]
-        total = len(catalog)
+        all_items = sorted(catalog, key=lambda board: str(board.get("title") or ""))
+        items = all_items[safe_offset:safe_offset + safe_limit]
+        total = len(all_items)
     return {
         "query": str(query or ""),
         "limit": safe_limit,
+        "offset": safe_offset,
         "total": total,
-        "items": [_catalog_card(board) for board in items[:safe_limit]],
+        "items": [_catalog_card(board) for board in items],
     }
 
 

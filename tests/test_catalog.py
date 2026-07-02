@@ -127,6 +127,19 @@ def test_catalog_cards_include_thumbnail_and_selected_metadata(tmp_path: Path) -
     assert json.loads(cards["items"][0]["metadata_json"])["uuid"] == "22222222-2222-5222-9222-222222222222"
 
 
+def test_catalog_cards_support_offset_paging(tmp_path: Path) -> None:
+    from moodboard_catalog import catalog_cards
+
+    catalog = load_catalog(write_catalog(tmp_path / "catalog.json"))
+
+    first = catalog_cards(catalog, query="", limit=1, offset=0)
+    second = catalog_cards(catalog, query="", limit=1, offset=1)
+
+    assert first["total"] == 2
+    assert first["items"][0]["uuid"] != second["items"][0]["uuid"]
+    assert second["offset"] == 1
+
+
 def test_random_board_is_deterministic_and_can_use_top_matches(tmp_path: Path) -> None:
     catalog = load_catalog(write_catalog(tmp_path / "catalog.json"))
 

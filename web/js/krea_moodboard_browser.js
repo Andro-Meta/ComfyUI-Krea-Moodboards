@@ -37,8 +37,10 @@ function text(tag, value, className) {
   return el;
 }
 
-async function fetchCards(query) {
-  const url = `/krea_moodboards/catalog?query=${encodeURIComponent(query || "")}&limit=120`;
+const PAGE_SIZE = 90;
+
+async function fetchCards(query, offset = 0) {
+  const url = `/krea_moodboards/catalog?query=${encodeURIComponent(query || "")}&limit=${PAGE_SIZE}&offset=${offset}`;
   const response = await fetch(url);
   if (!response.ok) throw new Error(`Catalog request failed: ${response.status}`);
   return response.json();
@@ -85,6 +87,11 @@ function buildBrowser(node) {
     fontSize: "12px",
     color: "#b8c7ff",
   });
+  const status = css(text("div", ""), {
+    margin: "0 0 8px",
+    fontSize: "11px",
+    color: "#aaa",
+  });
   const grid = css(document.createElement("div"), {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill, minmax(112px, 1fr))",
@@ -92,10 +99,18 @@ function buildBrowser(node) {
     maxHeight: "360px",
     overflow: "auto",
   });
-  root.append(controls, selected, grid);
+  const more = css(text("button", "Load more"), {
+    display: "none",
+    width: "100%",
+    marginTop: "8px",
+    padding: "6px",
+  });
+  root.append(controls, selected, status, grid, more);
 
   let cards = [];
   let showingFavorites = false;
+  let total = 0;
+  let currentQuery = search.value || "";
 
   function updateSelectedText() {
     const title = widget(node, "selected_title")?.value || "";
@@ -124,6 +139,10 @@ function buildBrowser(node) {
     const favs = getFavorites();
     const visible = showingFavorites ? cards.filter((card) => favs.includes(card.uuid)) : cards;
     grid.replaceChildren();
+    status.textContent = showingFavorites
+      ? `Showing ${visible.length} favorite moodboard${visible.length === 1 ? "" : "s"}.`
+      : `Showing ${cards.length} of ${total} moodboards${currentQuery ? ` for "${currentQuery}"` : ""}.`;
+    more.style.display = !showingFavorites && cards.length < total ? "block" : "none";
     for (const card of visible) {
       const item = css(document.createElement("div"), {
         border: card.uuid === selectedUuid(node) ? "2px solid #8fb4ff" : "1px solid #555",
@@ -192,20 +211,35 @@ function buildBrowser(node) {
     if (!visible.length) grid.append(css(text("div", "No moodboards found."), { color: "#aaa", padding: "10px" }));
   }
 
-  async function load() {
+  async function load({ append = false } = {}) {
     showingFavorites = false;
     setWidget(node, "query", search.value);
-    grid.replaceChildren(css(text("div", "Loading moodboards..."), { color: "#aaa", padding: "10px" }));
+    currentQuery = search.value || "";
+    if (!append) {
+      cards = [];
+      total = 0;
+      grid.replaceChildren(css(text("div", "Loading moodboards..."), { color: "#aaa", padding: "10px" }));
+      status.textContent = "";
+      more.style.display = "none";
+    } else {
+      more.textContent = "Loading...";
+      more.disabled = true;
+    }
     try {
-      const data = await fetchCards(search.value);
-      cards = data.items || [];
+      const data = await fetchCards(currentQuery, append ? cards.length : 0);
+      total = data.total || 0;
+      cards = append ? [...cards, ...(data.items || [])] : (data.items || []);
       render();
     } catch (error) {
       grid.replaceChildren(css(text("div", String(error)), { color: "#ff8a8a", padding: "10px" }));
+    } finally {
+      more.textContent = "Load more";
+      more.disabled = false;
     }
   }
 
   reload.onclick = () => load();
+  more.onclick = () => load({ append: true });
   favsOnly.onclick = () => {
     showingFavorites = !showingFavorites;
     favsOnly.textContent = showingFavorites ? "All" : "Favorites";
@@ -227,7 +261,7 @@ app.registerExtension({
     const original = nodeType.prototype.onNodeCreated;
     nodeType.prototype.onNodeCreated = function () {
       original?.apply(this, arguments);
-      for (const name of ["selected_uuid", "selected_title", "selected_url", "selected_metadata_json"]) {
+      for (const name of ["query", "selected_uuid", "selected_title", "selected_url", "selected_metadata_json"]) {
         const w = widget(this, name);
         if (w) w.hidden = true;
       }
