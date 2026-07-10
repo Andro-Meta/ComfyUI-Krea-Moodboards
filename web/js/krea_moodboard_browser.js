@@ -317,6 +317,20 @@ function buildBrowser(node) {
   reload.onclick = () => load();
   familySelect.onchange = () => load();
   more.onclick = () => load({ append: true });
+  // Infinite scroll: append the next page when the grid nears its bottom.
+  // The Load more button remains as a manual fallback.
+  let autoLoading = false;
+  grid.addEventListener("scroll", async () => {
+    if (autoLoading || showingFavorites) return;
+    if (cards.length >= total || !cards.length) return;
+    if (grid.scrollTop + grid.clientHeight < grid.scrollHeight - 160) return;
+    autoLoading = true;
+    try {
+      await load({ append: true });
+    } finally {
+      autoLoading = false;
+    }
+  });
   lucky.onclick = async () => {
     // Random pick from everything matching the current search/filter, not
     // just the loaded page: fetch one card at a random offset.
