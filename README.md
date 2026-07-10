@@ -4,7 +4,7 @@ Prompt-only Krea moodboard nodes for ComfyUI. This pack ships 3549 enriched Krea
 
 This is unofficial and is not affiliated with Krea AI.
 
-## What's New in 0.2.0
+## What's New in 0.2.1
 
 - **3549 moodboards** (up from 2500): the full public Krea moodboard catalog.
 - **Guidance v2**: every board's prompt was rewritten into a typed style schema (palette, lighting, medium and texture, composition, atmosphere, era) that describes only *how* things are rendered — never *what* is depicted — so moodboards no longer inject subjects (lone figures, portraits, buildings) into your prompt.
@@ -17,6 +17,7 @@ This is unofficial and is not affiliated with Krea AI.
 - **Style-family filter and random pick**: the visual browser can filter by family (photo, cinematic, anime, illustration, graphic, abstract, 3D, other, Andro.Meta) and has a dice button that picks a random board from the current search/filter.
 - **Searchable favorites**: the search box filters your saved favorites live.
 - **Fast, light thumbnails**: browser cards load 256px (~3KB) thumbnails instead of 1024px (~80KB), cached to a local git-ignored folder after first view so repeat browsing is instant and offline-friendly. No images are bundled in the repo.
+- **Infinite scroll**: the visual browser auto-loads the next page of cards as you scroll, with the Load more button as a fallback.
 
 ## Quick Start
 
