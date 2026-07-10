@@ -22,6 +22,8 @@ It includes moodboard metadata and prompt guidance:
 - conditioning notes
 - source summary
 
+The repository also bundles `data/andrometa_moodboards.json`, an original curated set of Andro.Meta prompt moods (text only).
+
 It does not include:
 
 - Krea moodboard images
@@ -29,6 +31,8 @@ It does not include:
 - full image URL lists
 - Krea model weights
 - ComfyUI model weights
+
+The visual browser downloads small (256px, ~3KB) public Krea thumbnails on demand into a local, git-ignored cache (`data/thumb_cache/`) on the user's machine. No images are committed to this repository or the registry package.
 
 Users can visually inspect the source styles on Krea's public moodboard gallery:
 

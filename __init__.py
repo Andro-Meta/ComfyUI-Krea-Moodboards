@@ -58,21 +58,42 @@ try:
     from server import PromptServer
 
     try:
-        from .moodboard_catalog import CATALOG_PATH, catalog_cards, catalog_cards_by_uuid, load_catalog
+        from .moodboard_catalog import CATALOG_PATH, cached_thumbnail_path, catalog_cards, catalog_cards_by_uuid, load_catalog
     except ImportError:
-        from moodboard_catalog import CATALOG_PATH, catalog_cards, catalog_cards_by_uuid, load_catalog
+        from moodboard_catalog import CATALOG_PATH, cached_thumbnail_path, catalog_cards, catalog_cards_by_uuid, load_catalog
+
+    def _int_param(request, name: str, default: int) -> int:
+        try:
+            return int(request.rel_url.query.get(name, default))
+        except (TypeError, ValueError):
+            return default
 
     @PromptServer.instance.routes.get("/krea_moodboards/catalog")
     async def krea_moodboards_catalog(request):
         query = request.rel_url.query.get("query", "")
-        limit = int(request.rel_url.query.get("limit", 80))
-        offset = int(request.rel_url.query.get("offset", 0))
-        return web.json_response(catalog_cards(load_catalog(CATALOG_PATH), query=query, limit=limit, offset=offset))
+        family = request.rel_url.query.get("family", "")
+        limit = _int_param(request, "limit", 80)
+        offset = _int_param(request, "offset", 0)
+        return web.json_response(
+            catalog_cards(load_catalog(CATALOG_PATH), query=query, limit=limit, offset=offset, family=family)
+        )
 
     @PromptServer.instance.routes.get("/krea_moodboards/by_uuid")
     async def krea_moodboards_by_uuid(request):
         uuids = [value for value in request.rel_url.query.get("uuids", "").split(",") if value]
         return web.json_response(catalog_cards_by_uuid(load_catalog(CATALOG_PATH), uuids))
+
+    @PromptServer.instance.routes.get("/krea_moodboards/thumb")
+    async def krea_moodboards_thumb(request):
+        import asyncio
+
+        uuid = request.rel_url.query.get("uuid", "")
+        try:
+            loop = asyncio.get_event_loop()
+            path = await loop.run_in_executor(None, lambda: cached_thumbnail_path(load_catalog(CATALOG_PATH), uuid))
+        except Exception as exc:
+            return web.json_response({"error": str(exc)}, status=404)
+        return web.FileResponse(path, headers={"Cache-Control": "max-age=86400"})
 except Exception:
     pass
 

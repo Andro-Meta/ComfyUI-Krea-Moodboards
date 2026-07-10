@@ -1,8 +1,22 @@
 # ComfyUI Krea Moodboards
 
-Prompt-only Krea moodboard nodes for ComfyUI. This pack ships 2500 enriched Krea moodboard prompt styles and helps you search, preview, randomize, mash up, and apply them before Krea 2 prompt enhancement or Qwen3-VL text encoding.
+Prompt-only Krea moodboard nodes for ComfyUI. This pack ships 3549 enriched Krea moodboard prompt styles and helps you search, preview, randomize, mash up, and apply them before Krea 2 prompt enhancement or Qwen3-VL text encoding.
 
 This is unofficial and is not affiliated with Krea AI.
+
+## What's New in 0.2.0
+
+- **3549 moodboards** (up from 2500): the full public Krea moodboard catalog.
+- **Guidance v2**: every board's prompt was rewritten into a typed style schema (palette, lighting, medium and texture, composition, atmosphere, era) that describes only *how* things are rendered — never *what* is depicted — so moodboards no longer inject subjects (lone figures, portraits, buildings) into your prompt.
+- **Style-only guardrail**: node outputs now open with an instruction block telling the model to apply the moodboard only as visual treatment and never add or change your subject.
+- **Quality-safe negatives**: negative guidance is filtered so it can never ban your subject or fight image quality (no more "avoid detail/sharpness/photorealism" leaking into negative prompts).
+- **Compact prompts**: keywords and style axes are sanitized, merged, and deduplicated against the prose guidance to save prompt tokens.
+- **Duplicate-name disambiguation**: many official Krea boards share a title (twenty boards are named "Cinematic Chiaroscuro Noir"); every duplicate now carries a unique style qualifier in its title (e.g. "Cinematic Chiaroscuro Noir — Candle Smoke Indigo"), and browser cards show each board's one-line style summary.
+- **Full catalog crawl**: the previous 2500 was a crawl cap; this release covers the complete public catalog.
+- **Andro.Meta curated collection**: 60 original curated prompt moods ship alongside the Krea catalog, selectable via the browser's collection filter.
+- **Style-family filter and random pick**: the visual browser can filter by family (photo, cinematic, anime, illustration, graphic, abstract, 3D, other, Andro.Meta) and has a dice button that picks a random board from the current search/filter.
+- **Searchable favorites**: the search box filters your saved favorites live.
+- **Fast, light thumbnails**: browser cards load 256px (~3KB) thumbnails instead of 1024px (~80KB), cached to a local git-ignored folder after first view so repeat browsing is instant and offline-friendly. No images are bundled in the repo.
 
 ## Quick Start
 
@@ -76,7 +90,7 @@ Searchable thumbnail browser inside the ComfyUI node. It uses public Krea thumbn
 
 Use it when you want to visually pick a moodboard without copying UUIDs.
 
-The gallery search box inside the node controls the browser results. `Load more` pages through the full 2500 moodboard catalog. Favorites are saved locally in your browser and can be recalled with the `Favorites` button.
+The gallery search box inside the node controls the browser results. `Load more` pages through the full 3549 moodboard catalog. Favorites are saved locally in your browser and can be recalled with the `Favorites` button. Each card shows the board's one-line style summary under its title, which is how you tell apart boards that share a name.
 
 Inputs:
 
@@ -123,7 +137,7 @@ To use a result in Mashup, copy only the UUID after `Copy into board_1-board_4:`
 
 ### Krea Moodboard Search
 
-Searches all 2500 styles by title, keyword, taste profile, prompt guidance, style axes, conditioning notes, source summary, and negative guidance.
+Searches all 3549 styles by title, keyword, taste profile, prompt guidance, style axes, conditioning notes, source summary, and negative guidance.
 
 Useful queries:
 
@@ -186,7 +200,7 @@ The `preview` output lists which source moodboards were resolved. If the mashup 
 
 ### Krea Moodboard Style
 
-Looks up one moodboard by exact title, slug, UUID, URL, or search phrase. This avoids a 2500-item dropdown while keeping every option findable.
+Looks up one moodboard by exact title, slug, UUID, URL, or search phrase. This avoids a 3549-item dropdown while keeping every option findable. Note that many official boards share a title; for an exact pick, use the UUID or slug from the Catalog Browser.
 
 ## Recommended Krea 2 Wiring
 

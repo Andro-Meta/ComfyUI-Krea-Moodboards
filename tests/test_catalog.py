@@ -225,7 +225,8 @@ def test_style_from_board_returns_positive_negative_and_metadata(tmp_path: Path)
     metadata = json.loads(style["metadata_json"])
 
     assert style["title"] == "Abyssal Gothic"
-    assert "Apply this Krea moodboard style" in style["positive"]
+    assert "Style-only Krea moodboard guidance" in style["positive"]
+    assert "Do not introduce people" in style["positive"]
     assert "Avoid flat bright daylight" in style["negative"]
     assert metadata["url"] == catalog[0]["url"]
     assert metadata["style_axes"] == ["deep teal", "gothic", "painterly"]
@@ -244,7 +245,7 @@ def test_apply_style_keeps_user_prompt_primary(tmp_path: Path) -> None:
     )
 
     assert applied["positive"].startswith("a ceramic fox on a table")
-    assert "Apply this Krea moodboard style" in applied["positive"]
+    assert "Style-only Krea moodboard guidance" in applied["positive"]
     assert applied["negative"] == "Avoid flat bright daylight."
 
 
@@ -262,3 +263,107 @@ def test_mashup_dedupes_negative_guidance_and_style_axes(tmp_path: Path) -> None
     assert "deep teal" in metadata["style_axes"]
     assert "Abyssal Gothic" in mashup["preview"]
     assert "Warm Product Pastel" in mashup["preview"]
+    # Guardrail appears exactly once, prepended to the whole mashup.
+    assert mashup["positive"].count("Style-only Krea moodboard guidance") == 1
+
+
+def test_mashup_orders_boards_by_weight() -> None:
+    from moodboard_catalog import mashup_boards as mashup_fn
+
+    board_a = {
+        "url": "https://www.krea.ai/moodboard-feed/a", "slug": "a", "uuid": "a",
+        "title": "Board A", "taste_profile": "", "keywords": [],
+        "qwen_guidance": {"prompt_guidance": "Use style A.", "negative_guidance": "", "style_axes": [], "conditioning_notes": [], "source_summary": ""},
+    }
+    board_b = {
+        "url": "https://www.krea.ai/moodboard-feed/b", "slug": "b", "uuid": "b",
+        "title": "Board B", "taste_profile": "", "keywords": [],
+        "qwen_guidance": {"prompt_guidance": "Use style B.", "negative_guidance": "", "style_axes": [], "conditioning_notes": [], "source_summary": ""},
+    }
+
+    mashup = mashup_fn([board_a, board_b], weights=[0.3, 1.5])
+
+    assert mashup["positive"].index("Board B") < mashup["positive"].index("Board A")
+    assert "(weight 1.50)" in mashup["positive"]
+
+
+def test_style_sanitizes_subject_locked_keywords_and_negatives() -> None:
+    board = {
+        "url": "https://www.krea.ai/moodboard-feed/leaky", "slug": "leaky", "uuid": "leaky",
+        "title": "Leaky Board",
+        "taste_profile": "Turbulent landscapes and solitary, haunting figures in deep teal.",
+        "keywords": ["solitary silhouette", "deep teal and indigo", "lone figure"],
+        "qwen_guidance": {
+            "prompt_guidance": "Palette: deep teal and navy. A lone figure stands in fog.",
+            "negative_guidance": "Avoid flat lighting. Avoid crowds, people, buildings. Avoid sharp detail and photorealism.",
+            "style_axes": ["chiaroscuro lighting", "deep teal and indigo"],
+            "conditioning_notes": [],
+            "source_summary": "",
+        },
+    }
+
+    style = style_from_board(board, strength="strong")
+    low = style["positive"].lower()
+
+    assert "lone figure" not in low
+    assert "solitary silhouette" not in low
+    assert "solitary, haunting figures" not in low
+    assert "chiaroscuro lighting" in low
+    # Terms already covered by the prose are deduped out of style keywords.
+    assert low.count("deep teal and indigo") == 1
+    negative_low = style["negative"].lower()
+    assert "crowds" not in negative_low
+    assert "buildings" not in negative_low
+    assert "sharp detail" not in negative_low
+    assert "photorealism" not in negative_low
+    assert "flat lighting" in negative_low
+
+
+def test_catalog_rows_include_disambiguating_summary(tmp_path: Path) -> None:
+    catalog = load_catalog(write_catalog(tmp_path / "catalog.json"))
+
+    listing = catalog_listing(catalog, query="gothic", page=1, page_size=5)
+
+    assert "Summary: Dark painterly gothic moodboard." in listing["catalog_text"]
+
+
+def test_thumbnail_variant_rewrites_krea_cdn_size() -> None:
+    from moodboard_catalog import thumbnail_variant
+
+    url = "https://optim-images.krea.ai/https---gen-krea-ai-images-abc-png-1024.webp"
+
+    assert thumbnail_variant(url, 256).endswith("-png-256.webp")
+    assert thumbnail_variant("", 256) == ""
+    assert thumbnail_variant("https://example.com/img-1024.webp", 256) == "https://example.com/img-1024.webp"
+
+
+def test_catalog_cards_filter_by_family_and_collection(tmp_path: Path) -> None:
+    from moodboard_catalog import catalog_cards
+
+    catalog = load_catalog(write_catalog(tmp_path / "catalog.json"))
+    catalog.append({
+        "url": "andrometa://retro_web",
+        "slug": "retro_web",
+        "uuid": "andrometa-retro_web",
+        "title": "Retro Web",
+        "taste_profile": "late-90s web aesthetic",
+        "keywords": ["Classic"],
+        "primary_image_url": "",
+        "collection": "andrometa",
+        "qwen_guidance": {
+            "prompt_guidance": "late-90s web aesthetic, pixelated 3d-collage",
+            "negative_guidance": "",
+            "style_axes": ["Classic"],
+            "conditioning_notes": [],
+            "source_summary": "Andro.Meta curated Classic mood.",
+        },
+    })
+
+    andrometa = catalog_cards(catalog, family="andrometa")
+    photo = catalog_cards(catalog, family="photo")
+
+    assert andrometa["total"] == 1
+    assert andrometa["items"][0]["collection"] == "andrometa"
+    assert photo["total"] >= 1
+    assert all(item["family"] == "photo" for item in photo["items"])
+    assert all(item["collection"] == "krea" for item in photo["items"])

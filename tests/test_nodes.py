@@ -68,7 +68,7 @@ def test_search_node_outputs_prompt_metadata_and_preview(monkeypatch) -> None:
     )
 
     assert title == "Gothic Teal"
-    assert "Apply this Krea moodboard style" in positive
+    assert "Style-only Krea moodboard guidance" in positive
     assert negative == "Avoid flat daylight."
     assert json.loads(metadata_json)["url"] == board["url"]
     assert "Gothic Teal" in preview
@@ -134,7 +134,7 @@ def test_visual_browser_outputs_selected_board(monkeypatch) -> None:
     assert title == "Gothic Teal"
     assert uuid == "abc"
     assert url == "https://www.krea.ai/moodboard-feed/example"
-    assert "Apply this Krea moodboard style" in positive
+    assert "Style-only Krea moodboard guidance" in positive
     assert negative == "Avoid flat daylight."
     assert json.loads(metadata_json)["uuid"] == "abc"
     assert "Gothic Teal" in preview

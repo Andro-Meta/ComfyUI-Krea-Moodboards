@@ -8,6 +8,9 @@ from typing import Any
 
 
 CATALOG_PATH = Path(__file__).resolve().parent / "data" / "krea_moodboards_slim.json"
+ANDROMETA_CATALOG_PATH = Path(__file__).resolve().parent / "data" / "andrometa_moodboards.json"
+THUMB_CACHE_DIR = Path(__file__).resolve().parent / "data" / "thumb_cache"
+THUMB_SIZE = 256
 
 
 class CatalogLoadError(RuntimeError):
@@ -46,11 +49,101 @@ STYLE_FAMILY_TERMS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("cinematic", ("cinematic", "film", "35mm", "noir", "editorial")),
 )
 
+# ---------------------------------------------------------------------------
+# Subject-safety sanitization (mirrors the Krea 2 Studio moodboard pipeline).
+# Moodboards must transfer style to arbitrary user subjects: guidance may never
+# insert people/figures/objects, and negatives may never ban the user's subject
+# or fight image quality.
+# ---------------------------------------------------------------------------
 
-def load_catalog(path: str | Path = CATALOG_PATH) -> list[dict[str, Any]]:
-    catalog_path = Path(path)
-    if not catalog_path.exists():
-        raise CatalogLoadError(f"Krea moodboard catalog not found: {catalog_path}")
+STYLE_GUARDRAIL = (
+    "Style-only Krea moodboard guidance: Apply the following only to the visual "
+    "treatment of the subject and scene described above. Do not add, remove, "
+    "replace, or change the requested subject matter. Do not introduce people, "
+    "faces, figures, animals, vehicles, architecture, text, or objects unless "
+    "they are explicitly requested in the main prompt."
+)
+
+SUBJECT_LOCK_TERMS: tuple[str, ...] = (
+    "crowd", "crowds", "people", "person", "persons", "human", "humans",
+    "figure", "figures", "man", "woman", "men", "women", "child", "children",
+    "animal", "animals", "lettering", "building", "buildings",
+    "architecture", "architectural", "vehicle", "vehicles", "face", "faces",
+    "populated", "unpopulated", "empty scene", "empty scenes",
+)
+
+SUBJECT_STYLE_REPLACEMENTS: tuple[tuple[re.Pattern[str], str], ...] = (
+    (re.compile(r"\b(?:a|an|the)\s+(?:black and white|high-contrast|glitchy|cinematic|close-up)?\s*portrait of\s+(?:a|an|the)?\s*[^.]+", re.I),
+     "portrait-style framing for the requested subject"),
+    (re.compile(r"\b(?:a|the)\s+lone figure\b", re.I), "a high-contrast silhouette treatment"),
+    (re.compile(r"\b(?:lone|solitary|single|isolated)(?:,?\s+\w+){0,2}?\s+(?:silhouette|figure)s?\b", re.I),
+     "high-contrast silhouette treatment"),
+    (re.compile(r"\bcentered figure\b", re.I), "center-weighted contrast"),
+    (re.compile(r"\bmany people\b", re.I), "multi-subject compositions"),
+    (re.compile(r"\bno people\b", re.I), "subject-agnostic compositions"),
+    (re.compile(r"\b(?:a|an|the)\s+(?:(?:single|lone|solitary|young|old|elderly)\s+){0,3}(?:woman|man|girl|boy|person|figure|child|face|subject|creature|animal)\b[^.]*", re.I),
+     "the requested subject rendered with the board's palette, lighting, and texture"),
+)
+
+NEGATIVE_QUALITY_BAN_RE = re.compile(
+    r"\b(?:photorealism|photorealistic|photo-realistic|realism|realistic|"
+    r"sharp|sharpness|crisp|clarity|clear|high[- ]resolution|resolution|"
+    r"detail|detailed|details|quality|anatomical|anatomy)\b",
+    re.I,
+)
+
+
+def abstract_style_prose(text: str) -> str:
+    """Rewrite concrete subject phrasing in style prose into rendering treatments."""
+    result = str(text or "")
+    for pattern, replacement in SUBJECT_STYLE_REPLACEMENTS:
+        result = pattern.sub(replacement, result)
+    return result
+
+
+def sanitize_style_fragment(text: str) -> str:
+    """Sanitize a short keyword/axis; drop it entirely if a subject noun survives."""
+    value = _normalize_spaces(abstract_style_prose(text))
+    low = value.lower()
+    if any(term in low for term in SUBJECT_LOCK_TERMS):
+        return ""
+    return value
+
+
+def sanitize_style_prose(text: str) -> str:
+    """Rewrite subject phrasing in prose; drop sentences that still leak subjects.
+
+    Used for Krea taste profiles, which describe example images and may mention
+    their subjects outright.
+    """
+    rewritten = abstract_style_prose(text)
+    kept: list[str] = []
+    for sentence in re.split(r"(?<=[.!?])\s+", _normalize_spaces(rewritten)):
+        low = sentence.lower()
+        if any(term in low for term in SUBJECT_LOCK_TERMS):
+            continue
+        if sentence:
+            kept.append(sentence)
+    return " ".join(kept)
+
+
+def sanitize_negative_guidance(text: str) -> str:
+    """Keep style-quality negative clauses; drop subject bans and quality bans."""
+    clauses = re.split(r"(?<=[.;])\s+|,\s+and\s+|,\s+or\s+", str(text or ""))
+    kept: list[str] = []
+    for clause in clauses:
+        low = clause.lower()
+        if any(term in low for term in SUBJECT_LOCK_TERMS):
+            continue
+        if NEGATIVE_QUALITY_BAN_RE.search(clause):
+            continue
+        cleaned = clause.strip(" ,;.")
+        if cleaned and cleaned not in kept:
+            kept.append(cleaned)
+    return ", ".join(kept)
+
+
+def _load_catalog_file(catalog_path: Path, *, default_collection: str = "krea") -> list[dict[str, Any]]:
     try:
         payload = json.loads(catalog_path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
@@ -77,6 +170,7 @@ def load_catalog(path: str | Path = CATALOG_PATH) -> list[dict[str, Any]]:
             "taste_profile": str(item.get("taste_profile") or "").strip(),
             "keywords": _string_list(item.get("keywords")),
             "primary_image_url": str(item.get("primary_image_url") or "").strip(),
+            "collection": str(item.get("collection") or default_collection).strip() or default_collection,
             "qwen_guidance": {
                 "prompt_guidance": prompt_guidance,
                 "negative_guidance": str(guidance.get("negative_guidance") or "").strip(),
@@ -88,6 +182,33 @@ def load_catalog(path: str | Path = CATALOG_PATH) -> list[dict[str, Any]]:
         }
         items.append(cleaned)
     return items
+
+
+def load_catalog(path: str | Path = CATALOG_PATH) -> list[dict[str, Any]]:
+    catalog_path = Path(path)
+    if not catalog_path.exists():
+        raise CatalogLoadError(f"Krea moodboard catalog not found: {catalog_path}")
+    items = _load_catalog_file(catalog_path, default_collection="krea")
+    # The Andro.Meta curated moods ship alongside the Krea catalog when present.
+    if catalog_path == CATALOG_PATH and ANDROMETA_CATALOG_PATH.exists():
+        try:
+            items.extend(_load_catalog_file(ANDROMETA_CATALOG_PATH, default_collection="andrometa"))
+        except CatalogLoadError:
+            pass
+    return items
+
+
+def thumbnail_variant(url: str, size: int = THUMB_SIZE) -> str:
+    """Rewrite a Krea CDN image URL to a smaller size variant.
+
+    Krea's optim-images CDN serves the same image at 32/64/128/256/512/1024 via
+    the trailing `-<size>.webp` segment; catalog URLs are usually 1024 (~80KB)
+    which is wasteful for 112px browser cards (256 is ~3KB).
+    """
+    value = str(url or "")
+    if not value.startswith("https://optim-images.krea.ai/"):
+        return value
+    return re.sub(r"-(\d{2,4})\.webp$", f"-{int(size)}.webp", value)
 
 
 def search_boards(
@@ -155,23 +276,30 @@ def catalog_cards(
     query: str = "",
     limit: int = 60,
     offset: int = 0,
+    family: str = "",
 ) -> dict[str, Any]:
     safe_limit = max(1, min(int(limit or 60), 250))
     safe_offset = max(0, int(offset or 0))
-    if str(query or "").strip():
-        matches = search_boards(catalog, query, top_k=len(catalog), min_score=1)
-        all_items = [match["board"] for match in matches]
-        items = all_items[safe_offset:safe_offset + safe_limit]
-        total = len(all_items)
+    safe_family = str(family or "").strip().lower()
+    if safe_family:
+        if safe_family == "andrometa":
+            pool = [board for board in catalog if str(board.get("collection") or "krea") == "andrometa"]
+        else:
+            pool = [board for board in catalog if style_family(board) == safe_family]
     else:
-        all_items = sorted(catalog, key=lambda board: str(board.get("title") or ""))
-        items = all_items[safe_offset:safe_offset + safe_limit]
-        total = len(all_items)
+        pool = catalog
+    if str(query or "").strip():
+        matches = search_boards(pool, query, top_k=len(pool) or 1, min_score=1)
+        all_items = [match["board"] for match in matches]
+    else:
+        all_items = sorted(pool, key=lambda board: str(board.get("title") or ""))
+    items = all_items[safe_offset:safe_offset + safe_limit]
     return {
         "query": str(query or ""),
         "limit": safe_limit,
         "offset": safe_offset,
-        "total": total,
+        "family": safe_family,
+        "total": len(all_items),
         "items": [_catalog_card(board) for board in items],
     }
 
@@ -259,44 +387,60 @@ def resolve_board_reference(catalog: list[dict[str, Any]], value: str) -> dict[s
     return find_board(catalog, raw)
 
 
-def style_from_board(board: dict[str, Any], *, strength: str = "normal") -> dict[str, str]:
+def _merged_style_terms(board: dict[str, Any], prompt_guidance: str) -> list[str]:
+    """Sanitized keywords + style axes, deduped against the prose and each other."""
+    guidance_low = prompt_guidance.lower()
+    merged: list[str] = []
+    seen: set[str] = set()
+    for raw_term in [*_string_list(board.get("keywords")), *_string_list(_guidance(board).get("style_axes"))]:
+        term = sanitize_style_fragment(raw_term)
+        key = term.lower()
+        if not term or key in seen or key in guidance_low:
+            continue
+        seen.add(key)
+        merged.append(term)
+    return merged
+
+
+def style_from_board(
+    board: dict[str, Any],
+    *,
+    strength: str = "normal",
+    include_guardrail: bool = True,
+) -> dict[str, str]:
     guidance = _guidance(board)
-    style_axes = _string_list(guidance.get("style_axes"))
-    keywords = _string_list(board.get("keywords"))
-    notes = _string_list(guidance.get("conditioning_notes"))
     title = str(board.get("title") or "Krea Moodboard").strip()
-    prompt_guidance = _sentence(str(guidance.get("prompt_guidance") or ""))
+    prompt_guidance = _sentence(abstract_style_prose(str(guidance.get("prompt_guidance") or "")))
+    style_terms = _merged_style_terms(board, prompt_guidance)
 
     if strength == "concise":
         parts = [prompt_guidance]
     elif strength == "strong":
         parts = [
             f"{title}: {prompt_guidance}",
-            str(board.get("taste_profile") or "").strip(),
-            f"Keywords: {', '.join(keywords)}" if keywords else "",
-            f"Style axes: {', '.join(style_axes)}" if style_axes else "",
-            f"Notes: {', '.join(notes)}" if notes else "",
+            _sentence(sanitize_style_prose(str(board.get("taste_profile") or ""))),
+            f"Style keywords: {', '.join(style_terms)}." if style_terms else "",
         ]
     else:
         parts = [
             f"{title}: {prompt_guidance}",
-            f"Keywords: {', '.join(keywords)}" if keywords else "",
-            f"Style axes: {', '.join(style_axes)}" if style_axes else "",
+            f"Style keywords: {', '.join(style_terms)}." if style_terms else "",
         ]
-    positive = "Apply this Krea moodboard style: " + " ".join(part for part in parts if part).strip()
-    negative = _sentence(str(guidance.get("negative_guidance") or ""))
+    body = " ".join(part for part in parts if part).strip()
+    positive = f"{STYLE_GUARDRAIL} {body}" if include_guardrail else body
+    negative = sanitize_negative_guidance(str(guidance.get("negative_guidance") or ""))
     metadata = {
         "title": title,
         "uuid": str(board.get("uuid") or ""),
         "slug": str(board.get("slug") or ""),
         "url": str(board.get("url") or ""),
-        "keywords": keywords,
-        "style_axes": style_axes,
+        "keywords": _string_list(board.get("keywords")),
+        "style_axes": _string_list(guidance.get("style_axes")),
         "source_summary": str(guidance.get("source_summary") or ""),
     }
     return {
         "positive": _sentence(positive),
-        "negative": negative,
+        "negative": _sentence(negative) if negative else "",
         "title": title,
         "metadata_json": json.dumps(metadata, ensure_ascii=False, sort_keys=True),
     }
@@ -344,14 +488,22 @@ def mashup_boards(
     if len(boards) < 2:
         raise ValueError("Choose at least two Krea moodboards for a mashup.")
     clean_weights = weights or [1.0] * len(boards)
+    # Strongest style leads the blend text so it carries the most prompt weight.
+    weighted = sorted(
+        (
+            (float(clean_weights[index]) if index < len(clean_weights) else 1.0, board)
+            for index, board in enumerate(boards[:4])
+        ),
+        key=lambda pair: -pair[0],
+    )
     positives: list[str] = []
     negatives: list[str] = []
     style_axes: list[str] = []
     sources: list[dict[str, str]] = []
 
-    for index, board in enumerate(boards[:4]):
-        weight = float(clean_weights[index]) if index < len(clean_weights) else 1.0
-        style = style_from_board(board, strength=strength)
+    for weight, board in weighted:
+        # Guardrail is prepended once for the whole mashup, not per board.
+        style = style_from_board(board, strength=strength, include_guardrail=False)
         title = style["title"]
         positives.append(f"{title} (weight {weight:.2f}): {style['positive']}")
         if style["negative"]:
@@ -360,17 +512,18 @@ def mashup_boards(
         for axis in metadata.get("style_axes", []):
             if axis and axis not in style_axes:
                 style_axes.append(axis)
-        sources.append({"title": title, "url": metadata.get("url", ""), "uuid": metadata.get("uuid", "")})
+        sources.append({"title": title, "url": metadata.get("url", ""), "uuid": metadata.get("uuid", ""), "weight": f"{weight:.2f}"})
 
     source_titles = [source["title"] for source in sources]
     mashup_title = "Mashup: " + " + ".join(source_titles[:4])
     metadata = {"source_count": len(sources), "sources": sources, "style_axes": style_axes}
     preview = "\n".join(
-        f"{idx}. {source['title']} | {source['url']}" for idx, source in enumerate(sources, start=1)
+        f"{idx}. {source['title']} (weight {source['weight']}) | {source['url']}"
+        for idx, source in enumerate(sources, start=1)
     )
     return {
-        "positive": "Blend these Krea moodboard styles: " + " | ".join(positives),
-        "negative": " ".join(_dedupe(negatives)),
+        "positive": f"{STYLE_GUARDRAIL} Blend these Krea moodboard styles: " + " | ".join(positives),
+        "negative": ", ".join(_dedupe(negatives)),
         "title": mashup_title,
         "metadata_json": json.dumps(metadata, ensure_ascii=False, sort_keys=True),
         "preview": (
@@ -387,6 +540,41 @@ def style_family(board: dict[str, Any]) -> str:
         if any(term in text for term in terms):
             return family
     return "other"
+
+
+def cached_thumbnail_path(
+    catalog: list[dict[str, Any]],
+    uuid: str,
+    *,
+    cache_dir: Path = THUMB_CACHE_DIR,
+    size: int = THUMB_SIZE,
+    timeout: int = 20,
+) -> Path:
+    """Download a board's small thumbnail once and serve it from local disk.
+
+    Keeps the repo image-free: thumbnails live only in the user's local cache
+    (~3KB each at 256px), fetched lazily as boards are browsed.
+    """
+    clean_uuid = str(uuid or "").strip()
+    board = next((b for b in catalog if str(b.get("uuid") or "") == clean_uuid), None)
+    if board is None:
+        raise ValueError(f"Unknown moodboard uuid: {clean_uuid}")
+    url = thumbnail_variant(str(board.get("primary_image_url") or ""), size)
+    if not url.startswith("https://optim-images.krea.ai/"):
+        raise ValueError("Moodboard has no Krea thumbnail.")
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    path = cache_dir / f"{clean_uuid}-{int(size)}.webp"
+    if path.exists() and path.stat().st_size > 0:
+        return path
+    import urllib.request
+
+    request = urllib.request.Request(url, headers={"User-Agent": "comfyui-krea-moodboards/0.2 thumb cache"})
+    with urllib.request.urlopen(request, timeout=timeout) as response:
+        data = response.read()
+    if not data:
+        raise ValueError("Empty thumbnail response.")
+    path.write_bytes(data)
+    return path
 
 
 def _score_board(board: dict[str, Any], expanded_terms: list[str]) -> tuple[int, list[str]]:
@@ -463,10 +651,12 @@ def _catalog_item_summary(board: dict[str, Any]) -> dict[str, Any]:
         "uuid": str(board.get("uuid") or ""),
         "slug": str(board.get("slug") or ""),
         "url": str(board.get("url") or ""),
-        "thumbnail_url": str(board.get("primary_image_url") or ""),
+        "thumbnail_url": thumbnail_variant(str(board.get("primary_image_url") or "")),
         "keywords": _string_list(board.get("keywords")),
         "style_axes": _string_list(guidance.get("style_axes")),
         "source_summary": str(guidance.get("source_summary") or ""),
+        "family": style_family(board),
+        "collection": str(board.get("collection") or "krea"),
     }
 
 
@@ -487,13 +677,16 @@ def _catalog_row(board: dict[str, Any], *, index: int) -> str:
     summary = _catalog_item_summary(board)
     keywords = ", ".join(summary["keywords"][:6]) or "none"
     axes = ", ".join(summary["style_axes"][:6]) or "none"
+    # Many official Krea boards share a title; the summary line disambiguates.
+    board_summary = _normalize_spaces(summary.get("source_summary") or "")
+    summary_line = f"\n   Summary: {board_summary}" if board_summary else ""
     return (
         f"{index}. [{summary['title']}]({summary['url']})\n"
         f"   Copy into board_1-board_4: {summary['uuid']}\n"
         f"   UUID: {summary['uuid']}\n"
         f"   Slug: {summary['slug']}\n"
         f"   Keywords: {keywords}\n"
-        f"   Style axes: {axes}"
+        f"   Style axes: {axes}{summary_line}"
     )
 
 

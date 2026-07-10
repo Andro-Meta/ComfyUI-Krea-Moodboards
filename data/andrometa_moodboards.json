@@ -1,0 +1,1326 @@
+{
+ "version": 1,
+ "source": "andrometa-curated",
+ "moodboards": [
+  {
+   "url": "andrometa://retro_web",
+   "slug": "retro_web",
+   "uuid": "andrometa-retro_web",
+   "title": "🕸️ Retro Web",
+   "taste_profile": "late-90s web aesthetic, pixelated 3d-collage, rendered objects and stickers, early CGI, glossy chrome, slightly chaotic web 1.0 graphics",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "late-90s web aesthetic, pixelated 3d-collage, rendered objects and stickers, early CGI, glossy chrome, slightly chaotic web 1.0 graphics",
+    "negative_guidance": "photorealistic, modern minimal, clean flat design",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://expressive_marker",
+   "slug": "expressive_marker",
+   "uuid": "andrometa-expressive_marker",
+   "title": "🖍️ Expressive Marker",
+   "taste_profile": "character-driven illustration, funny stylized marker drawing, bold expressive linework, personality over realism, playful cartoon energy",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "character-driven illustration, funny stylized marker drawing, bold expressive linework, personality over realism, playful cartoon energy",
+    "negative_guidance": "photoreal, literal rendering, stiff, corporate",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://cinematic_film",
+   "slug": "cinematic_film",
+   "uuid": "andrometa-cinematic_film",
+   "title": "🎬 Cinematic Film",
+   "taste_profile": "cinematic still, anamorphic lens, shallow depth of field, dramatic key light, color-graded teal and orange, filmic contrast, 35mm",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "cinematic still, anamorphic lens, shallow depth of field, dramatic key light, color-graded teal and orange, filmic contrast, 35mm",
+    "negative_guidance": "flat lighting, snapshot, oversaturated, low detail",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://editorial_portrait",
+   "slug": "editorial_portrait",
+   "uuid": "andrometa-editorial_portrait",
+   "title": "📸 Editorial Portrait",
+   "taste_profile": "editorial portrait photography, soft window light, natural skin texture, 85mm, magazine cover quality, refined color",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "editorial portrait photography, soft window light, natural skin texture, 85mm, magazine cover quality, refined color",
+    "negative_guidance": "plastic skin, harsh flash, distorted face, cartoon",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://product_studio",
+   "slug": "product_studio",
+   "uuid": "andrometa-product_studio",
+   "title": "💡 Product Studio",
+   "taste_profile": "studio product photography, seamless backdrop, soft gradient lighting, crisp reflections, material focus, commercial render",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "studio product photography, seamless backdrop, soft gradient lighting, crisp reflections, material focus, commercial render",
+    "negative_guidance": "cluttered background, harsh shadows, noise, amateur",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://fashion_editorial",
+   "slug": "fashion_editorial",
+   "uuid": "andrometa-fashion_editorial",
+   "title": "👗 Fashion Editorial",
+   "taste_profile": "high fashion editorial, lookbook aesthetic, dramatic styling, bold composition, glossy magazine grade, couture",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "high fashion editorial, lookbook aesthetic, dramatic styling, bold composition, glossy magazine grade, couture",
+    "negative_guidance": "casual snapshot, dull lighting, low fashion, plain",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://anime_cel",
+   "slug": "anime_cel",
+   "uuid": "andrometa-anime_cel",
+   "title": "🌸 Anime Cel",
+   "taste_profile": "anime cel shading, clean lineart, vibrant flat colors, expressive eyes, studio anime key frame, crisp 2d",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "anime cel shading, clean lineart, vibrant flat colors, expressive eyes, studio anime key frame, crisp 2d",
+    "negative_guidance": "photorealistic, 3d render, muddy colors, western cartoon",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://oil_painting",
+   "slug": "oil_painting",
+   "uuid": "andrometa-oil_painting",
+   "title": "🎨 Oil Painting",
+   "taste_profile": "classical oil painting, visible brushstrokes, rich impasto texture, old master lighting, painterly canvas, fine art",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "classical oil painting, visible brushstrokes, rich impasto texture, old master lighting, painterly canvas, fine art",
+    "negative_guidance": "digital flat, photo, smooth airbrush, low detail",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://watercolor",
+   "slug": "watercolor",
+   "uuid": "andrometa-watercolor",
+   "title": "💧 Watercolor",
+   "taste_profile": "soft watercolor painting, bleeding pigments, paper texture, delicate washes, loose organic edges, light and airy",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "soft watercolor painting, bleeding pigments, paper texture, delicate washes, loose organic edges, light and airy",
+    "negative_guidance": "hard edges, digital, heavy contrast, photoreal",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://scifi_concept",
+   "slug": "scifi_concept",
+   "uuid": "andrometa-scifi_concept",
+   "title": "🚀 Sci-Fi Concept",
+   "taste_profile": "sci-fi concept art, dramatic scale, volumetric lighting, intricate hard-surface design, cinematic atmosphere, matte painting",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "sci-fi concept art, dramatic scale, volumetric lighting, intricate hard-surface design, cinematic atmosphere, matte painting",
+    "negative_guidance": "flat, cartoon, low detail, mundane",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://vaporwave",
+   "slug": "vaporwave",
+   "uuid": "andrometa-vaporwave",
+   "title": "🌴 Vaporwave",
+   "taste_profile": "vaporwave aesthetic, neon pink and cyan, retro 80s grid, glitch art, chrome and palm, dreamy synthwave",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "vaporwave aesthetic, neon pink and cyan, retro 80s grid, glitch art, chrome and palm, dreamy synthwave",
+    "negative_guidance": "natural color, muted, realistic, dull",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://film_noir",
+   "slug": "film_noir",
+   "uuid": "andrometa-film_noir",
+   "title": "🕵️ Film Noir",
+   "taste_profile": "film noir, high-contrast black and white, hard chiaroscuro shadows, venetian blind light, moody 1940s cinema, dramatic",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "film noir, high-contrast black and white, hard chiaroscuro shadows, venetian blind light, moody 1940s cinema, dramatic",
+    "negative_guidance": "colorful, bright even lighting, cheerful, flat",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://golden_hour",
+   "slug": "golden_hour",
+   "uuid": "andrometa-golden_hour",
+   "title": "🌅 Golden Hour",
+   "taste_profile": "golden hour light, warm sun flare, long soft shadows, glowing rim light, hazy atmosphere, dreamy warmth",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "golden hour light, warm sun flare, long soft shadows, glowing rim light, hazy atmosphere, dreamy warmth",
+    "negative_guidance": "cold light, midday flat, overcast, dull",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://cyberpunk_neon",
+   "slug": "cyberpunk_neon",
+   "uuid": "andrometa-cyberpunk_neon",
+   "title": "🌃 Cyberpunk Neon",
+   "taste_profile": "cyberpunk city, neon signage, rain-slick streets, volumetric fog, moody blue and magenta, blade-runner atmosphere, cinematic",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "cyberpunk city, neon signage, rain-slick streets, volumetric fog, moody blue and magenta, blade-runner atmosphere, cinematic",
+    "negative_guidance": "daylight, rural, clean, pastel",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://pastel_dream",
+   "slug": "pastel_dream",
+   "uuid": "andrometa-pastel_dream",
+   "title": "🍬 Pastel Dream",
+   "taste_profile": "soft pastel palette, dreamy diffused light, gentle gradients, airy and delicate, kawaii soft aesthetic",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "soft pastel palette, dreamy diffused light, gentle gradients, airy and delicate, kawaii soft aesthetic",
+    "negative_guidance": "high contrast, dark, gritty, saturated neon",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://brutalist_mono",
+   "slug": "brutalist_mono",
+   "uuid": "andrometa-brutalist_mono",
+   "title": "🏛️ Brutalist Mono",
+   "taste_profile": "brutalist concrete, monochrome, stark geometric forms, raw textured surfaces, dramatic hard shadow, minimal severe",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "brutalist concrete, monochrome, stark geometric forms, raw textured surfaces, dramatic hard shadow, minimal severe",
+    "negative_guidance": "ornate, colorful, soft, cluttered",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://vintage_35mm",
+   "slug": "vintage_35mm",
+   "uuid": "andrometa-vintage_35mm",
+   "title": "🎞️ Vintage 35mm",
+   "taste_profile": "vintage 35mm film photograph, kodak portra grain, faded colors, light leaks, nostalgic analog warmth, slight vignette",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "vintage 35mm film photograph, kodak portra grain, faded colors, light leaks, nostalgic analog warmth, slight vignette",
+    "negative_guidance": "digital clarity, oversharp, neon, clean modern",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://storybook",
+   "slug": "storybook",
+   "uuid": "andrometa-storybook",
+   "title": "📖 Storybook",
+   "taste_profile": "storybook illustration, whimsical hand-drawn, warm gouache textures, charming character design, childrens book art",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "storybook illustration, whimsical hand-drawn, warm gouache textures, charming character design, childrens book art",
+    "negative_guidance": "photoreal, dark, gritty, 3d render",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://dark_fantasy",
+   "slug": "dark_fantasy",
+   "uuid": "andrometa-dark_fantasy",
+   "title": "🗡️ Dark Fantasy",
+   "taste_profile": "dark fantasy art, moody atmospheric, intricate detail, dramatic low-key lighting, epic painterly, ominous mood",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "dark fantasy art, moody atmospheric, intricate detail, dramatic low-key lighting, epic painterly, ominous mood",
+    "negative_guidance": "bright cheerful, flat, cartoon, simple",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://minimalist",
+   "slug": "minimalist",
+   "uuid": "andrometa-minimalist",
+   "title": "⬜ Minimalist",
+   "taste_profile": "minimalist composition, lots of negative space, limited palette, clean simple forms, calm balanced, refined",
+   "keywords": [
+    "Classic"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "minimalist composition, lots of negative space, limited palette, clean simple forms, calm balanced, refined",
+    "negative_guidance": "cluttered, busy, ornate, chaotic",
+    "style_axes": [
+     "Classic"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Classic mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://solarpunk",
+   "slug": "solarpunk",
+   "uuid": "andrometa-solarpunk",
+   "title": "🌿 Solarpunk",
+   "taste_profile": "solarpunk utopia, lush vertical gardens, renewable energy, sunlit eco-architecture, hopeful green future, art nouveau technology",
+   "keywords": [
+    "Utopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "solarpunk utopia, lush vertical gardens, renewable energy, sunlit eco-architecture, hopeful green future, art nouveau technology",
+    "negative_guidance": "dystopian, gray, polluted, ruined, dark",
+    "style_axes": [
+     "Utopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Utopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://crystal_utopia",
+   "slug": "crystal_utopia",
+   "uuid": "andrometa-crystal_utopia",
+   "title": "💎 Crystal Utopia",
+   "taste_profile": "gleaming crystalline city, translucent spires, prismatic light, pristine futuristic architecture, radiant utopia",
+   "keywords": [
+    "Utopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "gleaming crystalline city, translucent spires, prismatic light, pristine futuristic architecture, radiant utopia",
+    "negative_guidance": "decay, dark, gritty, ruined, polluted",
+    "style_axes": [
+     "Utopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Utopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://floating_isles",
+   "slug": "floating_isles",
+   "uuid": "andrometa-floating_isles",
+   "title": "🏞️ Floating Isles",
+   "taste_profile": "floating sky islands, verdant terraced gardens, waterfalls into clouds, serene aerial utopia, soft sunlight",
+   "keywords": [
+    "Utopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "floating sky islands, verdant terraced gardens, waterfalls into clouds, serene aerial utopia, soft sunlight",
+    "negative_guidance": "ground-level decay, urban grime, dark, ruined",
+    "style_axes": [
+     "Utopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Utopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://golden_age",
+   "slug": "golden_age",
+   "uuid": "andrometa-golden_age",
+   "title": "🏛️ Golden Age",
+   "taste_profile": "idealized golden age, classical marble architecture, warm prosperous light, harmonious utopian grandeur, serene",
+   "keywords": [
+    "Utopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "idealized golden age, classical marble architecture, warm prosperous light, harmonious utopian grandeur, serene",
+    "negative_guidance": "modern, gritty, ruined, dark, industrial",
+    "style_axes": [
+     "Utopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Utopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://bio_harmony",
+   "slug": "bio_harmony",
+   "uuid": "andrometa-bio_harmony",
+   "title": "🌱 Bio-Harmony",
+   "taste_profile": "living architecture, bioluminescent flora fused with structures, organic eco-futurism, harmonious nature and technology",
+   "keywords": [
+    "Utopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "living architecture, bioluminescent flora fused with structures, organic eco-futurism, harmonious nature and technology",
+    "negative_guidance": "industrial, sterile, ruined, polluted, dark",
+    "style_axes": [
+     "Utopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Utopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://celestial_paradise",
+   "slug": "celestial_paradise",
+   "uuid": "andrometa-celestial_paradise",
+   "title": "☁️ Celestial Paradise",
+   "taste_profile": "heavenly paradise, ethereal golden light, soft luminous clouds, divine serene atmosphere, radiant utopia",
+   "keywords": [
+    "Utopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "heavenly paradise, ethereal golden light, soft luminous clouds, divine serene atmosphere, radiant utopia",
+    "negative_guidance": "dark, grim, earthly decay, gritty",
+    "style_axes": [
+     "Utopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Utopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://pristine_future",
+   "slug": "pristine_future",
+   "uuid": "andrometa-pristine_future",
+   "title": "🤍 Pristine Future",
+   "taste_profile": "clean white utopian future, minimalist gleaming surfaces, soft ambient light, optimistic sci-fi, spotless and bright",
+   "keywords": [
+    "Utopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "clean white utopian future, minimalist gleaming surfaces, soft ambient light, optimistic sci-fi, spotless and bright",
+    "negative_guidance": "dirty, decayed, cluttered, dark, gritty",
+    "style_axes": [
+     "Utopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Utopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://arcadian",
+   "slug": "arcadian",
+   "uuid": "andrometa-arcadian",
+   "title": "🌾 Arcadian Idyll",
+   "taste_profile": "pastoral arcadian paradise, rolling green meadows, soft idealized nature, peaceful golden idyll, romantic landscape",
+   "keywords": [
+    "Utopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "pastoral arcadian paradise, rolling green meadows, soft idealized nature, peaceful golden idyll, romantic landscape",
+    "negative_guidance": "urban, dystopian, dark, industrial, ruined",
+    "style_axes": [
+     "Utopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Utopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://luminous_metropolis",
+   "slug": "luminous_metropolis",
+   "uuid": "andrometa-luminous_metropolis",
+   "title": "🌇 Luminous Metropolis",
+   "taste_profile": "bright optimistic megacity, clean soaring towers, vibrant daylight, hopeful prosperous future, gleaming skyline",
+   "keywords": [
+    "Utopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "bright optimistic megacity, clean soaring towers, vibrant daylight, hopeful prosperous future, gleaming skyline",
+    "negative_guidance": "dark, oppressive, polluted, ruined, grimy",
+    "style_axes": [
+     "Utopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Utopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://garden_tomorrow",
+   "slug": "garden_tomorrow",
+   "uuid": "andrometa-garden_tomorrow",
+   "title": "🌷 Garden of Tomorrow",
+   "taste_profile": "abundant futuristic gardens, blooming flora everywhere, harmony of life and design, lush vibrant utopia, sunlit",
+   "keywords": [
+    "Utopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "abundant futuristic gardens, blooming flora everywhere, harmony of life and design, lush vibrant utopia, sunlit",
+    "negative_guidance": "barren, gray, dystopian, dark, ruined",
+    "style_axes": [
+     "Utopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Utopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://aurora_haven",
+   "slug": "aurora_haven",
+   "uuid": "andrometa-aurora_haven",
+   "title": "🌌 Aurora Haven",
+   "taste_profile": "serene aurora-lit haven, northern lights, tranquil glowing sky, peaceful utopian calm, ethereal colors",
+   "keywords": [
+    "Utopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "serene aurora-lit haven, northern lights, tranquil glowing sky, peaceful utopian calm, ethereal colors",
+    "negative_guidance": "harsh, gritty, dark dystopia, ruined",
+    "style_axes": [
+     "Utopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Utopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://oceanic_utopia",
+   "slug": "oceanic_utopia",
+   "uuid": "andrometa-oceanic_utopia",
+   "title": "🐚 Oceanic Utopia",
+   "taste_profile": "radiant coastal paradise, turquoise waters, gleaming seaside utopia, sunlit harmony, pristine ocean architecture",
+   "keywords": [
+    "Utopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "radiant coastal paradise, turquoise waters, gleaming seaside utopia, sunlit harmony, pristine ocean architecture",
+    "negative_guidance": "polluted, dark, ruined, grimy, bleak",
+    "style_axes": [
+     "Utopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Utopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://harmonic_spires",
+   "slug": "harmonic_spires",
+   "uuid": "andrometa-harmonic_spires",
+   "title": "🕊️ Harmonic Spires",
+   "taste_profile": "elegant white utopian spires, clear blue sky, graceful flowing architecture, peaceful advanced civilization, serene light",
+   "keywords": [
+    "Utopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "elegant white utopian spires, clear blue sky, graceful flowing architecture, peaceful advanced civilization, serene light",
+    "negative_guidance": "brutalist, dark, decayed, oppressive",
+    "style_axes": [
+     "Utopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Utopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://radiant_commune",
+   "slug": "radiant_commune",
+   "uuid": "andrometa-radiant_commune",
+   "title": "🌻 Radiant Commune",
+   "taste_profile": "warm communal utopia, soft inviting light, people in harmony, cozy hopeful future, gentle abundance, golden glow",
+   "keywords": [
+    "Utopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "warm communal utopia, soft inviting light, people in harmony, cozy hopeful future, gentle abundance, golden glow",
+    "negative_guidance": "cold, isolated, dystopian, dark, bleak",
+    "style_axes": [
+     "Utopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Utopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://wasteland",
+   "slug": "wasteland",
+   "uuid": "andrometa-wasteland",
+   "title": "🏜️ Wasteland",
+   "taste_profile": "post-apocalyptic wasteland, cracked barren earth, rusted debris, harsh desolate horizon, lone survivor atmosphere",
+   "keywords": [
+    "Dystopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "post-apocalyptic wasteland, cracked barren earth, rusted debris, harsh desolate horizon, lone survivor atmosphere",
+    "negative_guidance": "lush, clean, utopian, vibrant, thriving",
+    "style_axes": [
+     "Dystopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Dystopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://industrial_decay",
+   "slug": "industrial_decay",
+   "uuid": "andrometa-industrial_decay",
+   "title": "🏭 Industrial Decay",
+   "taste_profile": "decaying industrial sprawl, rusted machinery, smog-choked sky, grimy abandoned factories, bleak gritty atmosphere",
+   "keywords": [
+    "Dystopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "decaying industrial sprawl, rusted machinery, smog-choked sky, grimy abandoned factories, bleak gritty atmosphere",
+    "negative_guidance": "clean, natural, bright, utopian, pristine",
+    "style_axes": [
+     "Dystopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Dystopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://surveillance_state",
+   "slug": "surveillance_state",
+   "uuid": "andrometa-surveillance_state",
+   "title": "📹 Surveillance State",
+   "taste_profile": "cold authoritarian dystopia, looming propaganda screens, gray monolithic architecture, oppressive order, bleak conformity",
+   "keywords": [
+    "Dystopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "cold authoritarian dystopia, looming propaganda screens, gray monolithic architecture, oppressive order, bleak conformity",
+    "negative_guidance": "warm, free, lush, colorful, hopeful",
+    "style_axes": [
+     "Dystopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Dystopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://toxic_megacity",
+   "slug": "toxic_megacity",
+   "uuid": "andrometa-toxic_megacity",
+   "title": "☢️ Toxic Megacity",
+   "taste_profile": "polluted dystopian megacity, acid-green haze, toxic smog, grimy oppressive neon, hazardous decay, choking atmosphere",
+   "keywords": [
+    "Dystopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "polluted dystopian megacity, acid-green haze, toxic smog, grimy oppressive neon, hazardous decay, choking atmosphere",
+    "negative_guidance": "clean, fresh, natural, bright, healthy",
+    "style_axes": [
+     "Dystopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Dystopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://ruined_empire",
+   "slug": "ruined_empire",
+   "uuid": "andrometa-ruined_empire",
+   "title": "🏚️ Ruined Empire",
+   "taste_profile": "crumbling fallen empire, broken monuments, overgrown ruins, faded former glory, melancholic decay, somber light",
+   "keywords": [
+    "Dystopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "crumbling fallen empire, broken monuments, overgrown ruins, faded former glory, melancholic decay, somber light",
+    "negative_guidance": "pristine, new, thriving, bright, intact",
+    "style_axes": [
+     "Dystopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Dystopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://brutalist_dystopia",
+   "slug": "brutalist_dystopia",
+   "uuid": "andrometa-brutalist_dystopia",
+   "title": "🧱 Brutalist Dystopia",
+   "taste_profile": "oppressive brutalist megastructures, endless gray concrete, cold dehumanizing scale, bleak authoritarian architecture",
+   "keywords": [
+    "Dystopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "oppressive brutalist megastructures, endless gray concrete, cold dehumanizing scale, bleak authoritarian architecture",
+    "negative_guidance": "warm, ornate, natural, colorful, inviting",
+    "style_axes": [
+     "Dystopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Dystopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://nuclear_winter",
+   "slug": "nuclear_winter",
+   "uuid": "andrometa-nuclear_winter",
+   "title": "❄️ Nuclear Winter",
+   "taste_profile": "frozen nuclear wasteland, ash-gray snow, dead skeletal trees, desolate cold apocalypse, bleak muted palette",
+   "keywords": [
+    "Dystopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "frozen nuclear wasteland, ash-gray snow, dead skeletal trees, desolate cold apocalypse, bleak muted palette",
+    "negative_guidance": "warm, lush, vibrant, alive, bright",
+    "style_axes": [
+     "Dystopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Dystopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://corporate_hellscape",
+   "slug": "corporate_hellscape",
+   "uuid": "andrometa-corporate_hellscape",
+   "title": "🏢 Corporate Hellscape",
+   "taste_profile": "endless corporate gray towers, drone-filled sky, dehumanizing megacorp dystopia, cold sterile oppression, overcast",
+   "keywords": [
+    "Dystopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "endless corporate gray towers, drone-filled sky, dehumanizing megacorp dystopia, cold sterile oppression, overcast",
+    "negative_guidance": "warm, natural, free, colorful, human",
+    "style_axes": [
+     "Dystopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Dystopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://flooded_world",
+   "slug": "flooded_world",
+   "uuid": "andrometa-flooded_world",
+   "title": "🌊 Flooded World",
+   "taste_profile": "submerged drowned city, climate-collapse flood, half-sunken buildings, murky still water, desolate abandonment",
+   "keywords": [
+    "Dystopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "submerged drowned city, climate-collapse flood, half-sunken buildings, murky still water, desolate abandonment",
+    "negative_guidance": "dry, pristine, thriving, bright, clean",
+    "style_axes": [
+     "Dystopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Dystopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://dust_bowl",
+   "slug": "dust_bowl",
+   "uuid": "andrometa-dust_bowl",
+   "title": "🌫️ Dust Bowl",
+   "taste_profile": "sepia dust-choked desolation, dried cracked land, swirling dust storms, depression-era bleakness, faded grim tones",
+   "keywords": [
+    "Dystopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "sepia dust-choked desolation, dried cracked land, swirling dust storms, depression-era bleakness, faded grim tones",
+    "negative_guidance": "vibrant, lush, clean, colorful, fresh",
+    "style_axes": [
+     "Dystopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Dystopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://underground_bunker",
+   "slug": "underground_bunker",
+   "uuid": "andrometa-underground_bunker",
+   "title": "🔦 Underground Bunker",
+   "taste_profile": "claustrophobic underground bunker, dim flickering lights, grimy concrete tunnels, oppressive enclosure, survival dread",
+   "keywords": [
+    "Dystopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "claustrophobic underground bunker, dim flickering lights, grimy concrete tunnels, oppressive enclosure, survival dread",
+    "negative_guidance": "open, bright, airy, natural, spacious",
+    "style_axes": [
+     "Dystopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Dystopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://dystopian_slums",
+   "slug": "dystopian_slums",
+   "uuid": "andrometa-dystopian_slums",
+   "title": "🏘️ Dystopian Slums",
+   "taste_profile": "overcrowded dystopian slums, makeshift shanty sprawl, tangled wires, grimy oppressive neon, dense urban decay",
+   "keywords": [
+    "Dystopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "overcrowded dystopian slums, makeshift shanty sprawl, tangled wires, grimy oppressive neon, dense urban decay",
+    "negative_guidance": "clean, spacious, affluent, bright, orderly",
+    "style_axes": [
+     "Dystopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Dystopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://ash_metropolis",
+   "slug": "ash_metropolis",
+   "uuid": "andrometa-ash_metropolis",
+   "title": "🌆 Ash Metropolis",
+   "taste_profile": "ash-covered ruined metropolis, smoldering broken skyline, gray apocalyptic haze, abandoned grandeur, somber desolation",
+   "keywords": [
+    "Dystopia"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "ash-covered ruined metropolis, smoldering broken skyline, gray apocalyptic haze, abandoned grandeur, somber desolation",
+    "negative_guidance": "thriving, clean, bright, lush, intact",
+    "style_axes": [
+     "Dystopia"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Dystopia mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://cosmic_horror",
+   "slug": "cosmic_horror",
+   "uuid": "andrometa-cosmic_horror",
+   "title": "🐙 Cosmic Horror",
+   "taste_profile": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, lovecraftian cosmic horror, eldritch presence, impossible geometry, cosmic dread, looming tentacled silhouette, eerie sickly glow",
+   "keywords": [
+    "Horror"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, lovecraftian cosmic horror, eldritch presence, impossible geometry, cosmic dread, looming tentacled silhouette, eerie sickly glow",
+    "negative_guidance": "cute, bright, safe, cheerful, colorful, illustration, painting, cartoon, anime, CGI, plastic render, overly clean digital art, airbrushed fantasy art",
+    "style_axes": [
+     "Horror"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Horror mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://gothic_horror",
+   "slug": "gothic_horror",
+   "uuid": "andrometa-gothic_horror",
+   "title": "🦇 Gothic Horror",
+   "taste_profile": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, victorian gothic horror, foggy moonlit graveyard, decaying mansion, dread atmosphere, candlelit shadows, ominous mood",
+   "keywords": [
+    "Horror"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, victorian gothic horror, foggy moonlit graveyard, decaying mansion, dread atmosphere, candlelit shadows, ominous mood",
+    "negative_guidance": "bright, modern, cheerful, colorful, safe, illustration, painting, cartoon, anime, CGI, plastic render, overly clean digital art, airbrushed fantasy art",
+    "style_axes": [
+     "Horror"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Horror mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://haunted_mansion",
+   "slug": "haunted_mansion",
+   "uuid": "andrometa-haunted_mansion",
+   "title": "🕯️ Haunted Mansion",
+   "taste_profile": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, decrepit haunted mansion, ghostly apparitions, dust and cobwebs, flickering candlelight, eerie creeping dread",
+   "keywords": [
+    "Horror"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, decrepit haunted mansion, ghostly apparitions, dust and cobwebs, flickering candlelight, eerie creeping dread",
+    "negative_guidance": "new, bright, cheerful, lively, clean, illustration, painting, cartoon, anime, CGI, plastic render, overly clean digital art, airbrushed fantasy art",
+    "style_axes": [
+     "Horror"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Horror mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://eldritch_void",
+   "slug": "eldritch_void",
+   "uuid": "andrometa-eldritch_void",
+   "title": "🌑 Eldritch Void",
+   "taste_profile": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, abyssal eldritch void, writhing shadow tendrils, oppressive consuming darkness, otherworldly horror, dim sickly light",
+   "keywords": [
+    "Horror"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, abyssal eldritch void, writhing shadow tendrils, oppressive consuming darkness, otherworldly horror, dim sickly light",
+    "negative_guidance": "bright, safe, colorful, cute, cheerful, illustration, painting, cartoon, anime, CGI, plastic render, overly clean digital art, airbrushed fantasy art",
+    "style_axes": [
+     "Horror"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Horror mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://psychological_horror",
+   "slug": "psychological_horror",
+   "uuid": "andrometa-psychological_horror",
+   "title": "🩻 Psychological Horror",
+   "taste_profile": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, unsettling psychological horror, surreal wrongness, distorted uncanny figure, creeping dread, muted desaturated palette",
+   "keywords": [
+    "Horror"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, unsettling psychological horror, surreal wrongness, distorted uncanny figure, creeping dread, muted desaturated palette",
+    "negative_guidance": "cheerful, normal, bright, safe, comforting, illustration, painting, cartoon, anime, CGI, plastic render, overly clean digital art, airbrushed fantasy art",
+    "style_axes": [
+     "Horror"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Horror mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://folk_horror",
+   "slug": "folk_horror",
+   "uuid": "andrometa-folk_horror",
+   "title": "🌾 Folk Horror",
+   "taste_profile": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, rural folk horror, eerie pagan ritual, isolated countryside dread, overcast unease, ominous masks and effigies",
+   "keywords": [
+    "Horror"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, rural folk horror, eerie pagan ritual, isolated countryside dread, overcast unease, ominous masks and effigies",
+    "negative_guidance": "urban, bright, cheerful, modern, safe, illustration, painting, cartoon, anime, CGI, plastic render, overly clean digital art, airbrushed fantasy art",
+    "style_axes": [
+     "Horror"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Horror mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://liminal_dread",
+   "slug": "liminal_dread",
+   "uuid": "andrometa-liminal_dread",
+   "title": "🚪 Liminal Dread",
+   "taste_profile": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, liminal space dread, empty fluorescent backrooms, uncanny endless hallways, unsettling emptiness, eerie still silence",
+   "keywords": [
+    "Horror"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, liminal space dread, empty fluorescent backrooms, uncanny endless hallways, unsettling emptiness, eerie still silence",
+    "negative_guidance": "lively, warm, populated, cheerful, cozy, illustration, painting, cartoon, anime, CGI, plastic render, overly clean digital art, airbrushed fantasy art",
+    "style_axes": [
+     "Horror"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Horror mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://cursed_forest",
+   "slug": "cursed_forest",
+   "uuid": "andrometa-cursed_forest",
+   "title": "🌲 Cursed Forest",
+   "taste_profile": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, twisted cursed forest, gnarled dead trees, creeping fog, sickly moonlight, lurking dread, dark fairytale horror",
+   "keywords": [
+    "Horror"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, twisted cursed forest, gnarled dead trees, creeping fog, sickly moonlight, lurking dread, dark fairytale horror",
+    "negative_guidance": "sunny, lush, cheerful, safe, vibrant, illustration, painting, cartoon, anime, CGI, plastic render, overly clean digital art, airbrushed fantasy art",
+    "style_axes": [
+     "Horror"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Horror mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://abandoned_asylum",
+   "slug": "abandoned_asylum",
+   "uuid": "andrometa-abandoned_asylum",
+   "title": "🏥 Abandoned Asylum",
+   "taste_profile": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, decaying abandoned asylum, peeling walls, rusted gurneys, cold institutional dread, grimy flickering horror",
+   "keywords": [
+    "Horror"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, decaying abandoned asylum, peeling walls, rusted gurneys, cold institutional dread, grimy flickering horror",
+    "negative_guidance": "clean, bright, modern, cheerful, safe, illustration, painting, cartoon, anime, CGI, plastic render, overly clean digital art, airbrushed fantasy art",
+    "style_axes": [
+     "Horror"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Horror mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://nightmare_fuel",
+   "slug": "nightmare_fuel",
+   "uuid": "andrometa-nightmare_fuel",
+   "title": "😱 Nightmare Fuel",
+   "taste_profile": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, surreal nightmare, distorted melting forms, irrational dread, dark dreamlike horror, disturbing uncanny atmosphere",
+   "keywords": [
+    "Horror"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, surreal nightmare, distorted melting forms, irrational dread, dark dreamlike horror, disturbing uncanny atmosphere",
+    "negative_guidance": "calm, normal, bright, pleasant, comforting, illustration, painting, cartoon, anime, CGI, plastic render, overly clean digital art, airbrushed fantasy art",
+    "style_axes": [
+     "Horror"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Horror mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://slasher_night",
+   "slug": "slasher_night",
+   "uuid": "andrometa-slasher_night",
+   "title": "🔪 Slasher Night",
+   "taste_profile": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, moonlit slasher horror, ominous lurking menace, suburban night dread, deep shadows, suspenseful tension, eerie quiet",
+   "keywords": [
+    "Horror"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, moonlit slasher horror, ominous lurking menace, suburban night dread, deep shadows, suspenseful tension, eerie quiet",
+    "negative_guidance": "bright, safe, cheerful, daylight, calm, illustration, painting, cartoon, anime, CGI, plastic render, overly clean digital art, airbrushed fantasy art",
+    "style_axes": [
+     "Horror"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Horror mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://witch_hollow",
+   "slug": "witch_hollow",
+   "uuid": "andrometa-witch_hollow",
+   "title": "🧹 Witch's Hollow",
+   "taste_profile": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, eerie witch's hollow, misty swamp, hanging moss, candle-lit ritual, dark folk dread, ominous green gloom",
+   "keywords": [
+    "Horror"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, eerie witch's hollow, misty swamp, hanging moss, candle-lit ritual, dark folk dread, ominous green gloom",
+    "negative_guidance": "bright, clean, cheerful, modern, safe, illustration, painting, cartoon, anime, CGI, plastic render, overly clean digital art, airbrushed fantasy art",
+    "style_axes": [
+     "Horror"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Horror mood.",
+    "guidance_version": 1
+   }
+  },
+  {
+   "url": "andrometa://abyssal_deep",
+   "slug": "abyssal_deep",
+   "uuid": "andrometa-abyssal_deep",
+   "title": "🦑 Abyssal Deep",
+   "taste_profile": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, deep-sea horror, bioluminescent abyss, unknown lurking leviathan, crushing dark depths, eerie cold dread",
+   "keywords": [
+    "Horror"
+   ],
+   "primary_image_url": "",
+   "collection": "andrometa",
+   "qwen_guidance": {
+    "prompt_guidance": "photorealistic horror photography, documentary realism, grainy analog film, visible film grain, low-light practical lighting, natural lens texture, real-world physical detail, unsettling candid realism, deep-sea horror, bioluminescent abyss, unknown lurking leviathan, crushing dark depths, eerie cold dread",
+    "negative_guidance": "bright, shallow, safe, cheerful, sunny, illustration, painting, cartoon, anime, CGI, plastic render, overly clean digital art, airbrushed fantasy art",
+    "style_axes": [
+     "Horror"
+    ],
+    "conditioning_notes": [],
+    "source_summary": "Andro.Meta curated Horror mood.",
+    "guidance_version": 1
+   }
+  }
+ ]
+}

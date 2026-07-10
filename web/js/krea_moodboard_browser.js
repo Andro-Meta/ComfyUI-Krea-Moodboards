@@ -38,9 +38,21 @@ function text(tag, value, className) {
 }
 
 const PAGE_SIZE = 90;
+const FAMILIES = [
+  ["", "All styles"],
+  ["photo", "Photo"],
+  ["cinematic", "Cinematic"],
+  ["anime", "Anime"],
+  ["illustration", "Illustration"],
+  ["graphic", "Graphic"],
+  ["abstract", "Abstract"],
+  ["3d", "3D"],
+  ["other", "Other"],
+  ["andrometa", "Andro.Meta"],
+];
 
-async function fetchCards(query, offset = 0) {
-  const url = `/krea_moodboards/catalog?query=${encodeURIComponent(query || "")}&limit=${PAGE_SIZE}&offset=${offset}`;
+async function fetchCards(query, offset = 0, family = "", limit = PAGE_SIZE) {
+  const url = `/krea_moodboards/catalog?query=${encodeURIComponent(query || "")}&limit=${limit}&offset=${offset}&family=${encodeURIComponent(family || "")}`;
   const response = await fetch(url);
   if (!response.ok) throw new Error(`Catalog request failed: ${response.status}`);
   return response.json();
@@ -72,7 +84,7 @@ function buildBrowser(node) {
 
   const controls = css(document.createElement("div"), {
     display: "grid",
-    gridTemplateColumns: "1fr auto auto",
+    gridTemplateColumns: "1fr auto auto auto auto",
     gap: "6px",
     marginBottom: "8px",
   });
@@ -86,9 +98,26 @@ function buildBrowser(node) {
   });
   search.placeholder = "Search Krea moodboards...";
   search.value = widget(node, "query")?.value || "";
+  const familySelect = css(document.createElement("select"), {
+    padding: "6px",
+    borderRadius: "6px",
+    border: "1px solid #555",
+    background: "#111",
+    color: "#eee",
+    maxWidth: "110px",
+  });
+  for (const [value, label] of FAMILIES) {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = label;
+    familySelect.append(option);
+  }
+  familySelect.title = "Filter by style family or the Andro.Meta curated collection.";
   const reload = text("button", "Search");
+  const lucky = text("button", "🎲");
+  lucky.title = "Pick a random moodboard from the current search/filter.";
   const favsOnly = text("button", "Favorites");
-  controls.append(search, reload, favsOnly);
+  controls.append(search, familySelect, reload, lucky, favsOnly);
 
   const selected = css(text("div", "No moodboard selected."), {
     margin: "4px 0 8px",
@@ -120,6 +149,15 @@ function buildBrowser(node) {
   let favoriteCards = [];
   let total = 0;
   let currentQuery = search.value || "";
+  let currentFamily = "";
+
+  function cardMatchesQuery(card, query) {
+    if (!query) return true;
+    const haystack = [card.title, card.source_summary, (card.keywords || []).join(" "), (card.style_axes || []).join(" ")]
+      .join(" ")
+      .toLowerCase();
+    return query.toLowerCase().split(/\s+/).every((term) => !term || haystack.includes(term));
+  }
 
   function updateSelectedText() {
     const title = widget(node, "selected_title")?.value || "";
@@ -146,11 +184,14 @@ function buildBrowser(node) {
 
   function render() {
     const favs = getFavorites();
-    const visible = showingFavorites ? favoriteCards : cards;
+    // Favorites are searchable too: the search box filters them client-side.
+    const visible = showingFavorites
+      ? favoriteCards.filter((card) => cardMatchesQuery(card, search.value || ""))
+      : cards;
     grid.replaceChildren();
     status.textContent = showingFavorites
-      ? `Showing ${visible.length} saved favorite moodboard${visible.length === 1 ? "" : "s"}.`
-      : `Showing ${cards.length} of ${total} moodboards${currentQuery ? ` for "${currentQuery}"` : ""}.`;
+      ? `Showing ${visible.length} of ${favoriteCards.length} saved favorite${favoriteCards.length === 1 ? "" : "s"}${search.value ? ` for "${search.value}"` : ""}.`
+      : `Showing ${cards.length} of ${total} moodboards${currentQuery ? ` for "${currentQuery}"` : ""}${currentFamily ? ` in ${currentFamily}` : ""}.`;
     more.style.display = !showingFavorites && cards.length < total ? "block" : "none";
     for (const card of visible) {
       const item = css(document.createElement("div"), {
@@ -160,33 +201,54 @@ function buildBrowser(node) {
         background: "#181818",
         cursor: "pointer",
       });
-      const img = css(document.createElement("img"), {
-        width: "100%",
-        height: "82px",
-        objectFit: "cover",
-        display: "block",
-        background: "#333",
-      });
-      img.loading = "lazy";
-      img.referrerPolicy = "no-referrer";
-      img.src = card.thumbnail_url || "";
-      img.alt = card.title;
-      img.onerror = () => {
-        img.replaceWith(css(text("div", "No thumbnail"), {
+      const placeholder = () => {
+        const emoji = /^\p{Extended_Pictographic}/u.test(card.title) ? [...card.title][0] : "";
+        return css(text("div", emoji || "No thumbnail"), {
           height: "82px",
           display: "grid",
           placeItems: "center",
           color: "#aaa",
-          fontSize: "12px",
+          fontSize: emoji ? "34px" : "12px",
           background: "#333",
-        }));
+        });
       };
+      let media;
+      if (card.thumbnail_url) {
+        const img = css(document.createElement("img"), {
+          width: "100%",
+          height: "82px",
+          objectFit: "cover",
+          display: "block",
+          background: "#333",
+        });
+        img.loading = "lazy";
+        img.referrerPolicy = "no-referrer";
+        // Local disk-cached 256px thumb first (~3KB), CDN small variant fallback.
+        img.src = card.uuid ? `/krea_moodboards/thumb?uuid=${encodeURIComponent(card.uuid)}` : card.thumbnail_url;
+        img.alt = card.title;
+        let triedCdn = false;
+        img.onerror = () => {
+          if (!triedCdn) {
+            triedCdn = true;
+            img.src = card.thumbnail_url;
+            return;
+          }
+          img.replaceWith(placeholder());
+        };
+        media = img;
+      } else {
+        media = placeholder();
+      }
       const body = css(document.createElement("div"), { padding: "6px" });
       const title = css(text("div", card.title), { fontSize: "12px", fontWeight: "bold", lineHeight: "1.2" });
-      const keywords = css(text("div", (card.keywords || []).slice(0, 3).join(", ")), {
+      // Many boards share a title; the summary sentence tells them apart.
+      const subtitleText = card.source_summary || (card.keywords || []).slice(0, 3).join(", ");
+      const keywords = css(text("div", subtitleText), {
         fontSize: "10px",
         color: "#aaa",
         minHeight: "24px",
+        maxHeight: "36px",
+        overflow: "hidden",
         marginTop: "4px",
       });
       const actions = css(document.createElement("div"), {
@@ -212,21 +274,23 @@ function buildBrowser(node) {
       };
       actions.append(star, link);
       body.append(title, keywords, actions);
-      item.append(img, body);
+      item.append(media, body);
       item.onclick = () => selectCard(card);
-      item.title = `${card.title}\nUUID: ${card.uuid}\n${card.url}`;
+      item.title = `${card.title}\n${card.source_summary || ""}\nUUID: ${card.uuid}\n${card.url}`;
       grid.append(item);
     }
     if (!visible.length) grid.append(css(text("div", "No moodboards found."), { color: "#aaa", padding: "10px" }));
   }
 
   async function load({ append = false } = {}) {
-    if (append && (search.value || "") !== currentQuery) {
+    if (append && ((search.value || "") !== currentQuery || (familySelect.value || "") !== currentFamily)) {
       append = false;
     }
     showingFavorites = false;
+    favsOnly.textContent = "Favorites";
     setWidget(node, "query", search.value);
     currentQuery = search.value || "";
+    currentFamily = familySelect.value || "";
     if (!append) {
       cards = [];
       total = 0;
@@ -238,7 +302,7 @@ function buildBrowser(node) {
       more.disabled = true;
     }
     try {
-      const data = await fetchCards(currentQuery, append ? cards.length : 0);
+      const data = await fetchCards(currentQuery, append ? cards.length : 0, currentFamily);
       total = data.total || 0;
       cards = append ? [...cards, ...(data.items || [])] : (data.items || []);
       render();
@@ -251,7 +315,26 @@ function buildBrowser(node) {
   }
 
   reload.onclick = () => load();
+  familySelect.onchange = () => load();
   more.onclick = () => load({ append: true });
+  lucky.onclick = async () => {
+    // Random pick from everything matching the current search/filter, not
+    // just the loaded page: fetch one card at a random offset.
+    try {
+      lucky.disabled = true;
+      const probe = await fetchCards(search.value || "", 0, familySelect.value || "", 1);
+      const poolTotal = probe.total || 0;
+      if (!poolTotal) return;
+      const offset = Math.floor(Math.random() * poolTotal);
+      const pick = await fetchCards(search.value || "", offset, familySelect.value || "", 1);
+      const card = (pick.items || [])[0];
+      if (card) selectCard(card);
+    } catch {
+      /* leave current view untouched */
+    } finally {
+      lucky.disabled = false;
+    }
+  };
   favsOnly.onclick = async () => {
     showingFavorites = !showingFavorites;
     favsOnly.textContent = showingFavorites ? "All" : "Favorites";
@@ -268,7 +351,14 @@ function buildBrowser(node) {
     render();
   };
   search.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") load();
+    if (event.key === "Enter") {
+      if (showingFavorites) render();
+      else load();
+    }
+  });
+  search.addEventListener("input", () => {
+    // Favorites filter live as you type; the full catalog waits for Enter/Search.
+    if (showingFavorites) render();
   });
 
   updateSelectedText();

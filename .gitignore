@@ -6,3 +6,5 @@ __pycache__/
 .venv/
 venv/
 *.log
+# Lazily-downloaded thumbnail cache; never committed (repo stays image-free).
+data/thumb_cache/

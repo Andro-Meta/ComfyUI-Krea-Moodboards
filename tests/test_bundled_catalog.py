@@ -8,11 +8,14 @@ from moodboard_catalog import CATALOG_PATH, load_catalog
 
 def test_bundled_catalog_contains_prompt_only_krea_moodboards() -> None:
     catalog = load_catalog(CATALOG_PATH)
+    krea = [board for board in catalog if board.get("collection") == "krea"]
+    andrometa = [board for board in catalog if board.get("collection") == "andrometa"]
 
-    assert len(catalog) == 2500
-    assert all(board.get("url", "").startswith("https://www.krea.ai/moodboard-feed/") for board in catalog)
+    assert len(krea) == 3549
+    assert len(andrometa) == 60
+    assert all(board.get("url", "").startswith("https://www.krea.ai/moodboard-feed/") for board in krea)
     assert all("image_urls" not in board for board in catalog)
-    assert all(board.get("primary_image_url", "").startswith("https://optim-images.krea.ai/") for board in catalog)
+    assert all(board.get("primary_image_url", "").startswith("https://optim-images.krea.ai/") for board in krea)
     assert all(board.get("qwen_guidance", {}).get("prompt_guidance") for board in catalog)
 
 

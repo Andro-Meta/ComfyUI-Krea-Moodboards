@@ -180,7 +180,7 @@ class KreaMoodboardSearch:
     RETURN_TYPES = ("STRING", "STRING", "STRING", "STRING", "STRING")
     RETURN_NAMES = ("positive", "negative", "title", "metadata_json", "preview")
     FUNCTION = "search"
-    DESCRIPTION = "Search 2500 Krea moodboard prompt styles by mood, color, medium, lighting, texture, or title."
+    DESCRIPTION = "Search 3549 Krea moodboard prompt styles by mood, color, medium, lighting, texture, or title."
 
     @classmethod
     def INPUT_TYPES(cls):
