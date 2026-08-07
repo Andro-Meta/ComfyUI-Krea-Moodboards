@@ -220,12 +220,20 @@ The single-board workflow wires:
 Krea Moodboard Visual Browser
   -> Krea Moodboard Apply
   -> TextEncodeKrea2 positive/negative
-  -> KSampler
-  -> Qwen Image VAE Decode
+  -> UNETLoader (krea2_turbo_int4_tensorwise_mixed)
+  -> KSampler (er_sde / beta57)
+  -> VAEDecode (krea2RealVae_v10)
   -> Save Image
 ```
 
 The mashup workflow wires two visual browsers into `Krea Moodboard Mashup`, then sends the blended style through the same Krea 2 generation path.
+
+These ready-to-load graphs assume:
+
+- CLIP: `Huihui-Qwen3-VL-4B-Instruct-abliterated-fp8_scaled.safetensors` with type `krea2`
+- UNet: `krea2_turbo_int4_tensorwise_mixed.safetensors` via stock `UNETLoader`
+- VAE: `krea2RealVae_v10.safetensors` (swap to `qwen_image_vae.safetensors` if needed)
+- Prompt encode: `TextEncodeKrea2` (not stock `CLIPTextEncode`)
 
 ### Official Turbo Workflow
 
@@ -245,10 +253,10 @@ For mashups, use two or more `Krea Moodboard Search` or `Krea Moodboard Random` 
 Use these nodes before Krea text encoding:
 
 ```text
-UNETLoader -> Krea 2 model
-CLIPLoader -> Qwen3-VL text encoder with Krea2 type
-VAELoader -> Qwen Image VAE
-Krea Moodboard Apply.positive -> Krea2/Qwen3-VL text encode prompt
+UNETLoader -> krea2_turbo_int4_tensorwise_mixed (or your Krea 2 UNet)
+CLIPLoader -> Huihui/Qwen3-VL text encoder with type krea2
+VAELoader -> krea2RealVae_v10 (or qwen_image_vae)
+Krea Moodboard Apply.positive -> TextEncodeKrea2 prompt
 encoded conditioning -> KSampler
 KSampler samples -> VAE Decode
 ```

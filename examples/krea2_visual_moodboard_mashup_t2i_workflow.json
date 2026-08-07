@@ -209,6 +209,9 @@
       ],
       "widgets_values": [
         "",
+        1.0,
+        0.0,
+        "before prompt",
         false
       ],
       "title": "Encode Positive"
@@ -250,6 +253,9 @@
       ],
       "widgets_values": [
         "",
+        1.0,
+        0.0,
+        "before prompt",
         false
       ],
       "title": "Encode Negative"
@@ -279,7 +285,7 @@
         }
       ],
       "widgets_values": [
-        "krea2_turbo_fp8_scaled.safetensors",
+        "krea2_turbo_int4_tensorwise_mixed.safetensors",
         "default"
       ],
       "title": "Load Krea 2 Turbo"
@@ -324,7 +330,7 @@
     },
     {
       "id": 8,
-      "type": "EmptyLatentImage",
+      "type": "EmptySD3LatentImage",
       "pos": [
         810,
         1470
@@ -449,10 +455,10 @@
       "widgets_values": [
         123456789,
         "fixed",
-        8,
+        6,
         1.0,
-        "euler",
-        "simple",
+        "er_sde",
+        "beta57",
         1.0
       ],
       "title": "Krea 2 Turbo Sampler"
@@ -482,7 +488,7 @@
         }
       ],
       "widgets_values": [
-        "qwen_image_vae.safetensors"
+        "krea2RealVae_v10.safetensors"
       ],
       "title": "Load Qwen Image VAE"
     },
